@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jacek Becela"]
-  s.date = %q{2010-06-22}
+  s.date = %q{2010-06-23}
   s.description = %q{Sign in with Exvo account}
   s.email = %q{jacek.becela@gmail.com}
   s.extra_rdoc_files = [
@@ -17,7 +17,15 @@ Gem::Specification.new do |s|
      "README"
   ]
   s.files = [
-    "VERSION"
+    ".gitignore",
+     "LICENSE",
+     "README",
+     "Rakefile",
+     "VERSION",
+     "exvo-auth.gemspec",
+     "lib/exvo-auth.rb",
+     "test/helper.rb",
+     "test/test_exvo_auth.rb"
   ]
   s.homepage = %q{http://github.com/Exvo/Auth}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -34,9 +42,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<oa-oauth>, [">= 0"])
     else
+      s.add_dependency(%q<oa-oauth>, [">= 0"])
     end
   else
+    s.add_dependency(%q<oa-oauth>, [">= 0"])
   end
 end
 

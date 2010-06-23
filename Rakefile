@@ -9,7 +9,7 @@ begin
     gem.email = "jacek.becela@gmail.com"
     gem.homepage = "http://github.com/Exvo/Auth"
     gem.authors = ["Jacek Becela"]
-    gem.add_dependency "oa-oauth"
+    gem.add_dependency "oa-oauth", "0.0.1"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
