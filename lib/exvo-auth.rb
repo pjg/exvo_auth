@@ -2,6 +2,22 @@ require 'omniauth/oauth'
 require 'multi_json'
 
 module ExvoAuth
+  def path_with_query(path, params = {})
+    query = Rack::Utils.build_query(params)
+    query.empty? ? path : [path, query].join("?")
+  end
+  module_function :path_with_query
+
+  def interactive_sign_in_path(params = {})
+    path_with_query("/auth/interactive", params)
+  end
+  module_function :interactive_sign_in_path
+  
+  def non_interactive_sign_in_path(params = {})
+    path_with_query("/auth/non_interactive", params)
+  end
+  module_function :non_interactive_sign_in_path
+  
   module Strategies
     class Base < OmniAuth::Strategies::OAuth2
       def initialize(app, name, app_id, app_secret, options = {})
