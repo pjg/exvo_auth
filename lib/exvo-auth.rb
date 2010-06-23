@@ -36,6 +36,10 @@ module ExvoAuth
       def initialize(app, app_id, app_secret, options = {})
         super(app, :interactive, app_id, app_secret, options)
       end
+      
+      def request_phase(options = {})
+        super(:scope => request["scope"])
+      end
     end
 
     class NonInteractive < Base
@@ -44,7 +48,7 @@ module ExvoAuth
         super(app, :non_interactive, app_id, app_secret, options)
       end
       
-      def request_phase
+      def request_phase(options = {})
         redirect @client.non_interactive.authorize_url({:redirect_uri => callback_url, :scope => request["scope"]})
       end
       
@@ -60,7 +64,7 @@ module ExvoAuth
       end
       
       def fail!(message_key)
-        [403, { "Content-Type" => "application/javascript" }, [MultiJson.encode({ :message => "Not signed in!", :status => 403 })]]
+        [200, { "Content-Type" => "application/javascript" }, [MultiJson.encode({ :message => "Not signed in!", :status => 403 })]]
       end
     end
   end
