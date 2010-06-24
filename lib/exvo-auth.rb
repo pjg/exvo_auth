@@ -2,97 +2,16 @@ require 'omniauth/oauth'
 require 'multi_json'
 
 module ExvoAuth
-  def path_with_query(path, params = {})
-    query = Rack::Utils.build_query(params)
-    query.empty? ? path : [path, query].join("?")
-  end
-  module_function :path_with_query
-
-  def interactive_sign_in_path(params = {})
-    path_with_query("/auth/interactive", params)
-  end
-  module_function :interactive_sign_in_path
-  
-  def non_interactive_sign_in_path(params = {})
-    path_with_query("/auth/non_interactive", params)
-  end
-  module_function :non_interactive_sign_in_path
-  
-  module Strategies
-    class Base < OmniAuth::Strategies::OAuth2
-      def initialize(app, name, app_id, app_secret, options = {})
-        options[:site] ||= 'https://auth.exvo.com/'
-        super(app, name, app_id, app_secret, options)
-      end
-      
-      def user_data
-        @data ||= MultiJson.decode(@access_token.get('/user.json'))
-      end
-
-      # Depending on requested scope and the fact that client app is trusted or not
-      # you can get nil values for some attributes even if they are set.
-      def user_info
-        {
-          'nickname' => user_data['nickname'],
-          'email'    => user_data['email']
-        }
-      end
-
-      def auth_hash
-        OmniAuth::Utils.deep_merge(super, {
-          'provider'  => 'exvo',
-          'uid'       => user_data['id'],
-          'user_info' => user_info,
-          'extra'     => { 'user_hash' => user_data }
-        })
-      end
-    end
-      
-    class Interactive < Base
-      def initialize(app, app_id, app_secret, options = {})
-        super(app, :interactive, app_id, app_secret, options)
-      end
-      
-      def request_phase(options = {})
-        super(:scope => request["scope"])
-      end
-    end
-
-    class NonInteractive < Base
-      def initialize(app, app_id, app_secret, options = {})
-        options[:callback_key] ||= "_callback"
-        super(app, :non_interactive, app_id, app_secret, options)
-      end
-      
-      def request_phase(options = {})
-        redirect @client.non_interactive.authorize_url({:redirect_uri => callback_url, :scope => request["scope"]})
-      end
-      
-      def callback_url
-        key   = options[:callback_key]
-        value = request[key]
-        
-        if value
-          super + "?" + Rack::Utils.build_query(key => value)
-        else
-          super
-        end
-      end
-      
-      def fail!(message_key)
-        [200, { "Content-Type" => "application/javascript" }, [MultiJson.encode({ :message => "Not signed in!", :status => 403 })]]
-      end
-    end
-  end
-  
+  autoload :Routes, "exvo_auth/routes"
   module OAuth2
     module Strategy
-      class NonInteractive < ::OAuth2::Strategy::WebServer
-        def authorize_params(options = {})
-          super(options).merge('type' => 'non_interactive')
-        end
-      end
+      autoload :NonInteractive, "exvo_auth/oauth2"
     end
+  end
+  module Strategies
+    autoload :Base,           "exvo_auth/strategies/base"
+    autoload :Interactive,    "exvo_auth/strategies/interactive"
+    autoload :NonInteractive, "exvo_auth/strategies/non_interactive"
   end
 end
 
