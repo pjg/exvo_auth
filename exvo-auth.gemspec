@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{exvo-auth}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jacek Becela"]
@@ -24,7 +24,10 @@ Gem::Specification.new do |s|
      "VERSION",
      "exvo-auth.gemspec",
      "lib/exvo-auth.rb",
+     "lib/exvo_auth/config.rb",
      "lib/exvo_auth/oauth2.rb",
+     "lib/exvo_auth/path_helpers.rb",
+     "lib/exvo_auth/rails/controller_helpers.rb",
      "lib/exvo_auth/strategies/base.rb",
      "lib/exvo_auth/strategies/interactive.rb",
      "lib/exvo_auth/strategies/non_interactive.rb",
