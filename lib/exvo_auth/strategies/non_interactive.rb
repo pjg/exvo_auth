@@ -19,6 +19,6 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def fail!(message_key)
-    [200, { "Content-Type" => "application/json" }, [MultiJson.encode({ :message => "Not signed in!", :status => 403 })]]
+    [200, { "Content-Type" => "application/json" }, [MultiJson.encode({ :message => "Not signed in!", :status => 401 })]]
   end
 end
