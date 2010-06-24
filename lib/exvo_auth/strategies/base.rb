@@ -1,6 +1,6 @@
 class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
   def initialize(app, name, app_id, app_secret, options = {})
-    options[:site] ||= 'https://auth.exvo.com/'
+    options[:site] ||= ExvoAuth::Config.host
     super(app, name, app_id, app_secret, options)
   end
   
@@ -8,13 +8,11 @@ class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
     @data ||= MultiJson.decode(@access_token.get('/user.json'))
   end
 
-  # Depending on requested scope and the fact that client app is trusted or not
-  # you can get nil values for some attributes even if they are set.
   def user_info
     {
       'nickname' => user_data['nickname'],
       'email'    => user_data['email']
-    }
+    }.reject{ |k, v| v.nil? }
   end
 
   def auth_hash

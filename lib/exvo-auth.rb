@@ -2,16 +2,23 @@ require 'omniauth/oauth'
 require 'multi_json'
 
 module ExvoAuth
-  autoload :Routes, "exvo_auth/routes"
+  autoload :PathHelpers, 'exvo_auth/path_helpers'
+  autoload :Config,      'exvo_auth/config'
+
   module OAuth2
     module Strategy
-      autoload :NonInteractive, "exvo_auth/oauth2"
+      autoload :NonInteractive, 'exvo_auth/oauth2'
     end
   end
+
   module Strategies
-    autoload :Base,           "exvo_auth/strategies/base"
-    autoload :Interactive,    "exvo_auth/strategies/interactive"
-    autoload :NonInteractive, "exvo_auth/strategies/non_interactive"
+    autoload :Base,           'exvo_auth/strategies/base'
+    autoload :Interactive,    'exvo_auth/strategies/interactive'
+    autoload :NonInteractive, 'exvo_auth/strategies/non_interactive'
+  end
+
+  module Rails
+    autoload :ControllerHelpers, 'exvo_auth/rails/controller_helpers'
   end
 end
 

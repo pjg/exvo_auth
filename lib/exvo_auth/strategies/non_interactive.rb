@@ -1,6 +1,5 @@
 class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   def initialize(app, app_id, app_secret, options = {})
-    options[:callback_key] ||= "_callback"
     super(app, :non_interactive, app_id, app_secret, options)
   end
   
@@ -9,7 +8,7 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def callback_url
-    key   = options[:callback_key]
+    key   = ExvoAuth::Config.callback_key
     value = request[key]
     
     if value
