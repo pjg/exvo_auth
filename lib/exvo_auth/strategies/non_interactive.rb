@@ -4,7 +4,7 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def request_phase(options = {})
-    redirect @client.non_interactive.authorize_url({ :redirect_uri => callback_url, :scope => request["scope"] })
+    redirect @client.non_interactive.authorize_url(:redirect_uri => callback_url, :scope => request["scope"])
   end
   
   def callback_url
@@ -19,6 +19,6 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def fail!(message_key)
-    [200, { "Content-Type" => "application/json" }, [MultiJson.encode({ :message => "Not signed in!", :status => 401 })]]
+    [200, { "Content-Type" => "application/json" }, [MultiJson.encode(:message => "Not signed in!", :status => 401)]]
   end
 end

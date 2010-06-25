@@ -9,10 +9,9 @@
 # that doesn't match current authentication grant.
 #
 # This strategy is needed to sign users in during json/jsonp requests,
-# which cannot result in any interactive flows.
+# which cannot result in any interactive/navigational flows.
 class ExvoAuth::OAuth2::Strategy::NonInteractive < ::OAuth2::Strategy::WebServer
   def authorize_params(options = {})
     super(options).merge('type' => 'non_interactive')
   end
 end
-
