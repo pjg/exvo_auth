@@ -1,7 +1,8 @@
 module ExvoAuth::PathHelpers
   def self.included(base)
     if base.respond_to?(:helper_method)
-      base.helper_method :interactive_sign_in_path, :non_interactive_sign_in_path, :auth_sign_out_url
+      base.helper_method :interactive_sign_in_path, :non_interactive_sign_in_path, 
+        :auth_sign_out_url, :auth_sign_in_url, :auth_sign_up_url
     end
   end
   
