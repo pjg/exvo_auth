@@ -17,6 +17,14 @@ module ExvoAuth::PathHelpers
   def auth_sign_out_url
     ExvoAuth::Config.host + "/users/sign_out"
   end
+
+  def auth_sign_in_url
+    ExvoAuth::Config.host + "/users/sign_in"
+  end
+
+  def auth_sign_up_url
+    ExvoAuth::Config.host + "/users/sign_up"
+  end
   
   private
   
