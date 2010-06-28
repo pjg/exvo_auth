@@ -19,6 +19,10 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def fail!(message_key)
-    [401, { "Content-Type" => "application/json" }, [MultiJson.encode(:message => "Not signed in!", :status => 401)]]
+    body = MultiJson.encode(:error => "Please sign in!")
+    [401, { 
+      "Content-Type"   => "application/json", 
+      "Content-Length" => body.length.to_s 
+    }, [body]]
   end
 end
