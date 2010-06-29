@@ -37,4 +37,19 @@ module ExvoAuth::Rails::ControllerHelpers
   def stored_location
     session.delete(:return_to)
   end
+  
+  private
+  
+  def interactive_sign_in_path(params = {})
+    path_with_query("/auth/interactive", params)
+  end
+
+  def non_interactive_sign_in_path(params = {})
+    path_with_query("/auth/non_interactive", params)
+  end
+  
+  def path_with_query(path, params = {})
+    query = Rack::Utils.build_query(params)
+    query.empty? ? path : "#{path}?#{query}"
+  end
 end
