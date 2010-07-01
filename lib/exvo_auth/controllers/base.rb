@@ -14,10 +14,10 @@ module ExvoAuth::Controllers::Base
     end
   end
   
-  def sign_out!
+  def sign_out_and_redirect!(url = sign_out_url)
     session.delete(:user_id)
     @current_user = nil
-    redirect_to sign_out_url
+    redirect_to url
   end
   
   def current_user
@@ -30,7 +30,7 @@ module ExvoAuth::Controllers::Base
   end
   
   def store_location!
-    session[:return_to] = request.url if request.get?
+    session[:return_to] = current_url
   end
   
   def stored_location
@@ -39,10 +39,12 @@ module ExvoAuth::Controllers::Base
 
   def sign_in_path
     "/auth/interactive"
-  end  
+  end
+  
   def sign_up_path
     "/auth/interactive"
   end
+
   def sign_out_url
     ExvoAuth::Config.host + "/users/sign_out"
   end

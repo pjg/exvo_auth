@@ -10,4 +10,8 @@ module ExvoAuth::Controllers::Merb
   def find_user_by_id(id)
     User[id]
   end
+  
+  def current_url
+    request.full_uri if request.method == :get
+  end
 end

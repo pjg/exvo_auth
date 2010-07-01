@@ -7,4 +7,8 @@ module ExvoAuth::Controllers::Rails
   def find_user_by_id(id)
     User.find(id)
   end
+  
+  def current_url
+    request.url if request.get?
+  end
 end
