@@ -1,9 +1,4 @@
-module ExvoAuth::Rails::ControllerHelpers
-  def self.included(base)
-    base.send :include, ExvoAuth::PathHelpers
-    base.helper_method :current_user, :signed_in?
-  end
-  
+module ExvoAuth::Controllers::Base
   def authenticate_user!
     if !signed_in?
       store_location!
@@ -11,19 +6,23 @@ module ExvoAuth::Rails::ControllerHelpers
       callback_key   = ExvoAuth::Config.callback_key
       callback_value = params[callback_key]
 
-      if request.xhr?
-        redirect_to non_interactive_sign_in_path
-      elsif callback_value.present?
+      if callback_value
         redirect_to non_interactive_sign_in_path(callback_key => callback_value)
       else
-        redirect_to interactive_sign_in_path
+        redirect_to sign_in_path
       end
     end
   end
   
+  def sign_out!
+    session.delete(:user_id)
+    @current_user = nil
+    redirect_to sign_out_url
+  end
+  
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = session[:user_id] && User.find_by_id(session[:user_id])
+    @current_user = session[:user_id] && find_user_by_id(session[:user_id])
   end
 
   def signed_in?
@@ -37,18 +36,19 @@ module ExvoAuth::Rails::ControllerHelpers
   def stored_location
     session.delete(:return_to)
   end
-  
-  private
-  
-  def interactive_sign_in_path(params = {})
-    path_with_query("/auth/interactive", params)
+
+  def sign_in_path
+    "/auth/interactive"
+  end  
+  def sign_up_path
+    "/auth/interactive"
+  end
+  def sign_out_url
+    ExvoAuth::Config.host + "/users/sign_out"
   end
 
   def non_interactive_sign_in_path(params = {})
-    path_with_query("/auth/non_interactive", params)
-  end
-  
-  def path_with_query(path, params = {})
+    path  = "/auth/non_interactive"
     query = Rack::Utils.build_query(params)
     query.empty? ? path : "#{path}?#{query}"
   end
