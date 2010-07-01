@@ -11,6 +11,8 @@ module ExvoAuth::Controllers::Base
       else
         redirect_to sign_in_path
       end
+      
+      false # for Merb and older Rails
     end
   end
   
