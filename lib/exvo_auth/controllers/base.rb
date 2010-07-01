@@ -14,6 +14,11 @@ module ExvoAuth::Controllers::Base
     end
   end
   
+  def sign_in_and_redirect!(user_id, url = "/")
+    session[:user_id] = user_id
+    redirect stored_location || url
+  end
+  
   def sign_out_and_redirect!(url = sign_out_url)
     session.delete(:user_id)
     @current_user = nil
