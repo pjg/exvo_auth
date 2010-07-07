@@ -34,7 +34,11 @@ callback routes but you can also route both callbacks to the same controller met
 like shown above.
 
 
-4. Implement callback(s).
+4. Include controller helpers into your application controller.
+
+include ExvoAuth::Controllers::Rails (or Merb)
+
+5. Implement callback(s).
 
 Sample implementation in SessionsController:
 
@@ -45,4 +49,4 @@ Sample implementation in SessionsController:
 In short: you get params[:auth]. Do what you want to do with it: store the data, create session, etc.
 
 
-5. Read the source, there are few features not mentioned in this README.
+6. Read the source, there are few features not mentioned in this README.
