@@ -1,7 +1,7 @@
 module ExvoAuth::Controllers::Rails
   def self.included(base)
     base.send :include, ExvoAuth::Controllers::Base
-    base_send :include, InstanceMethods
+    base.send :include, InstanceMethods
     base.helper_method :current_user, :signed_in?, :sign_in_path, :sign_up_path
   end
     
