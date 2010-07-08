@@ -14,4 +14,20 @@ module ExvoAuth::Config
   def self.callback_key=(callback_key)
     @@callback_key = callback_key 
   end
+  
+  def self.client_id=(client_id)
+    @@client_id = client_id
+  end
+  
+  def self.client_id
+    @@client_id
+  end
+  
+  def self.client_secret=(client_secret)
+    @@client_secret = client_secret
+  end
+  
+  def self.client_secret
+    @@client_secret
+  end
 end
