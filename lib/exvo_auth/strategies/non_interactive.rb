@@ -1,6 +1,6 @@
 class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
-  def initialize(app, app_id, app_secret, options = {})
-    super(app, :non_interactive, app_id, app_secret, options)
+  def initialize(app, options = {})
+    super(app, :non_interactive, options)
   end
   
   def request_phase(options = {})

@@ -1,12 +1,14 @@
 class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
-  def initialize(app, name, app_id = ExvoAuth::Config.client_id, app_secret = ExvoAuth::Config.client_secret, options = {})
-    options[:site] ||= ExvoAuth::Config.host
+  def initialize(app, name, options = {})
+    options[:site]          ||= ExvoAuth::Config.host
+    options[:client_id]     ||= ExvoAuth::Config.client_id
+    options[:client_secret] ||= ExvoAuth::Config.client_secret
     
-    if options[:site].nil? || app_id.nil? || app_secret.nil?
+    if options[:site].nil? || options[:client_id].nil? || options[:client_secret].nil?
       raise(ArgumentError, "Please configure host, client_id and client_secret")
     end
     
-    super(app, name, app_id, app_secret, options)
+    super(app, name, options.delete(:client_id), options.delete(:client_secret), options)
   end
   
   def user_data

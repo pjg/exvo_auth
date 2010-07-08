@@ -1,6 +1,6 @@
 class ExvoAuth::Strategies::Interactive < ExvoAuth::Strategies::Base
-  def initialize(app, app_id, app_secret, options = {})
-    super(app, :interactive, app_id, app_secret, options)
+  def initialize(app, options = {})
+    super(app, :interactive, options)
   end
   
   def request_phase(options = {})
