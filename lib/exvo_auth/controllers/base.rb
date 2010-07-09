@@ -16,7 +16,7 @@ module ExvoAuth::Controllers::Base
   
   def sign_in_and_redirect!(user_id, url = "/")
     session[:user_id] = user_id
-    redirect stored_location || url
+    redirect_to stored_location || url
   end
   
   def sign_out_and_redirect!(url = sign_out_url)
