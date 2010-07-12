@@ -17,7 +17,7 @@ There are two middlewares. Usually you will need the "interactive" one:
 Both middlewares need client_id and client_secret arguments.
 In Rails, the relevant line could look like this:
 
-  config.middleware.use ExvoAuth::Strategies::Interactive, "client_id", "client_secret"
+  config.middleware.use ExvoAuth::Strategies::Interactive, :client_id => "client_id, :client_secret => "client_secret"
 
     
 3. Add routes.
