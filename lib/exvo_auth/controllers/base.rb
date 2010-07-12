@@ -22,6 +22,7 @@ module ExvoAuth::Controllers::Base
     redirect_to stored_location || ExvoAuth::Config.host + "/close_popup.html"
   end
   
+  # TODO: redirect to sign_out_url AND redirect to url (or "/") after that
   def sign_out_and_redirect!(url = sign_out_url)
     session.delete(:user_id)
     @current_user = nil
