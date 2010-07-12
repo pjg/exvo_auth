@@ -13,10 +13,13 @@ module ExvoAuth::Controllers::Base
       end
     end
   end
-  
-  def sign_in_and_redirect!(user_id, url = "/")
+
+  # If there's no stored location then it's a popup login.
+  # If there's a stored location then it's a redirect login 
+  # caused by #authenticate_user! method.
+  def sign_in_and_redirect!(user_id)
     session[:user_id] = user_id
-    redirect_to stored_location || url
+    redirect_to stored_location || ExvoAuth::Config.host + "/close_popup.html"
   end
   
   def sign_out_and_redirect!(url = sign_out_url)
@@ -49,7 +52,7 @@ module ExvoAuth::Controllers::Base
   def sign_up_path
     "/auth/interactive"
   end
-
+  
   def sign_out_url
     ExvoAuth::Config.host + "/users/sign_out"
   end
