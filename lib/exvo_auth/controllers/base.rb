@@ -1,4 +1,9 @@
 module ExvoAuth::Controllers::Base
+  def self.included(base)
+    raise "Please define a #root_url method in #{base.name} (or in routes)" unless base.method_defined? :root_url
+  end
+
+  # A before filter to protect your sensitive actions.
   def authenticate_user!
     if !signed_in?
       store_location!
@@ -9,7 +14,7 @@ module ExvoAuth::Controllers::Base
       if callback_value
         redirect_to non_interactive_sign_in_path(callback_key => callback_value)
       else
-        redirect_to sign_in_path
+        redirect_to "/auth/interactive"
       end
     end
   end
@@ -17,16 +22,28 @@ module ExvoAuth::Controllers::Base
   # If there's no stored location then it's a popup login.
   # If there's a stored location then it's a redirect login 
   # caused by #authenticate_user! method.
+  #
+  # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!(user_id)
     session[:user_id] = user_id
-    redirect_to stored_location || ExvoAuth::Config.host + "/close_popup.html"
+    
+    url = if params[:state] == "popup"
+      ExvoAuth::Config.host + "/close_popup.html"
+    else
+      stored_location || root_url
+    end
+    
+    redirect_to url
   end
   
-  # TODO: redirect to sign_out_url AND redirect to url (or "/") after that
-  def sign_out_and_redirect!(url = sign_out_url)
+  # Redirect to sign_out_url, signs out and redirects back to root_path (by default).
+  # This method assumes you have a "root_url" method defined in your controller.
+  #
+  # Usuallly this method is called from your sessions#destroy.
+  def sign_out_and_redirect!(return_to = root_url)
     session.delete(:user_id)
     @current_user = nil
-    redirect_to url
+    redirect_to sign_out_url(return_to)
   end
   
   def current_user
@@ -38,6 +55,8 @@ module ExvoAuth::Controllers::Base
     !!current_user
   end
   
+  protected
+
   def store_location!
     session[:return_to] = current_url
   end
@@ -46,16 +65,8 @@ module ExvoAuth::Controllers::Base
     session.delete(:return_to)
   end
 
-  def sign_in_path
-    "/auth/interactive"
-  end
-  
-  def sign_up_path
-    "/auth/interactive"
-  end
-  
-  def sign_out_url
-    ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => current_url })
+  def sign_out_url(return_to)
+    ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
   end
 
   def non_interactive_sign_in_path(params = {})

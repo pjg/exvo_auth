@@ -1,0 +1,3 @@
+* Add a way for apps to talk to each other: ssl + basic auth with client_id and client_secret. An app would confirm
+creds (of the connecting app) with Auth app using a speedy HEAD request. 
+* Benchmark the above to measure RTT footprint

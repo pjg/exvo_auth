@@ -4,7 +4,7 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
   end
   
   def request_phase(options = {})
-    redirect @client.non_interactive.authorize_url(:redirect_uri => callback_url, :scope => request["scope"])
+    redirect @client.non_interactive.authorize_url(:redirect_uri => callback_url, :scope => request["scope"], :state => request["state"])
   end
   
   def callback_url

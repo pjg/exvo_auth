@@ -10,10 +10,12 @@ module ExvoAuth::Controllers::Merb
       throw :halt unless signed_in?
     end 
 
+    protected
+
     def redirect_to(*args)
       redirect(*args)
     end
-
+    
     def find_user_by_id(id)
       User[id]
     end
