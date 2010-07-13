@@ -55,7 +55,7 @@ module ExvoAuth::Controllers::Base
   end
   
   def sign_out_url
-    ExvoAuth::Config.host + "/users/sign_out"
+    ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => current_url })
   end
 
   def non_interactive_sign_in_path(params = {})
