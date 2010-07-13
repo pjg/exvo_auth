@@ -38,13 +38,29 @@ like shown above.
 
 include ExvoAuth::Controllers::Rails (or Merb)
 
-5. Implement callback(s).
+5. Implement a sessions controller.
 
-Sample implementation in SessionsController:
+Sample implementation (Rails):
 
+class SessionsController < ApplicationController
   def create
-    render :text => params[:auth].inspect
+    auth = params[:auth]
+    user = User.find_or_create_by_uid(auth["uid"])
+    
+    user_info = auth["user_info"]
+    user.update_attributes!(user_info)
+    
+    sign_in_and_redirect!(user.id)
   end
+  
+  def destroy
+    sign_out_and_redirect!
+  end
+  
+  def failure
+    render :text => "Sorry!"
+  end
+end
   
 In short: you get params[:auth]. Do what you want to do with it: store the data, create session, etc.
 
