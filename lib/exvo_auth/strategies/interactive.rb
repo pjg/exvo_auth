@@ -4,6 +4,9 @@ class ExvoAuth::Strategies::Interactive < ExvoAuth::Strategies::Base
   end
   
   def request_phase(options = {})
-    super(:scope => request["scope"], :state => request["state"])
+    super(unicorns_and_rainbows(
+      :scope => request["scope"], 
+      :state => request["state"]
+    ))
   end
 end
