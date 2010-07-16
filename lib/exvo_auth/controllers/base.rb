@@ -19,10 +19,6 @@ module ExvoAuth::Controllers::Base
     end
   end
 
-  # If there's no stored location then it's a popup login.
-  # If there's a stored location then it's a redirect login 
-  # caused by #authenticate_user! method.
-  #
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!(user_id)
     session[:user_id] = user_id

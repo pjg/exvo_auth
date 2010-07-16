@@ -14,10 +14,13 @@ There are two middlewares. Usually you will need the "interactive" one:
   ExvoAuth::Strategies::Interactive
   ExvoAuth::Strategies::NonInteractive
   
-Both middlewares need client_id and client_secret arguments.
-In Rails, the relevant line could look like this:
+Both middlewares need client_id and client_secret configured.
+In Rails, the relevant lines could look like this:
 
-  config.middleware.use ExvoAuth::Strategies::Interactive, :client_id => "client_id, :client_secret => "client_secret"
+  ExvoAuth::Config.host          = Rails.env.production? ? "https://auth.exvo.com" : "https://staging.auth.exvo.com"
+  ExvoAuth::Config.client_id     = "foo"
+  ExvoAuth::Config.client_secret = "bar" 
+  config.middleware.use ExvoAuth::Strategies::Interactive
 
     
 3. Add routes.
