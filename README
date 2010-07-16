@@ -36,6 +36,13 @@ You can have separate callbacks for interactive and non-interactive
 callback routes but you can also route both callbacks to the same controller method
 like shown above.
 
+You also need a root_url route defined in routes (Rails) or this little hack (Merb):
+
+Merb::Controller.class_eval do
+  def root_url
+    absolute_url("/foo") # probably a "/"
+  end
+end
 
 4. Include controller helpers into your application controller.
 
