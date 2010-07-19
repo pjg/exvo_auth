@@ -1,15 +1,10 @@
 require 'omniauth/oauth'
 require 'multi_json'
+require 'httparty'
 
 module ExvoAuth
   autoload :Config, 'exvo_auth/config'
   
-  module OAuth2
-    module Strategy
-      autoload :NonInteractive, 'exvo_auth/oauth2'
-    end
-  end
-
   module Strategies
     autoload :Base,           'exvo_auth/strategies/base'
     autoload :Interactive,    'exvo_auth/strategies/interactive'
@@ -20,6 +15,18 @@ module ExvoAuth
     autoload :Base,  'exvo_auth/controllers/base'
     autoload :Rails, 'exvo_auth/controllers/rails'
     autoload :Merb,  'exvo_auth/controllers/merb'
+  end
+  
+  module Autonomous
+    autoload :Consumer, 'exvo_auth/autonomous/consumer'
+    autoload :Provider, 'exvo_auth/autonomous/provider'
+    autoload :Cache,    'exvo_auth/autonomous/cache'
+  end
+  
+  module OAuth2
+    module Strategy
+      autoload :NonInteractive, 'exvo_auth/oauth2'
+    end
   end
 end
 

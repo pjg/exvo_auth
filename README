@@ -1,3 +1,6 @@
+OAuth2
+======
+
 -1. Get familiar with OmniAuth by Intridea: http://github.com/intridea/omniauth. Read about OAuth2.
 
 
@@ -75,3 +78,28 @@ In short: you get params[:auth]. Do what you want to do with it: store the data,
 
 
 6. Read the source, there are few features not mentioned in this README.
+
+
+Inter-Application Communication
+===============================
+
+
+# Consumer side
+
+consumer = ExvoAuth::Autonomous::Consumer.new(
+  :provider_id => "this is client_id of the app you want to connect to"
+)
+consumer.access_token => "this is the access token to use along with your client_id to communicate with providing app"
+
+
+# Provider side
+
+provider = ExvoAuth::Autonomous::Provider.new(
+  :consumer_id   => "the client_id of the consuming app",
+  :access_token  => "the access_token of the consuming app"
+)
+provider.scopes => ["users", "payments"] # example access scopes defined in auth server.
+
+Scopes are used by providing app to check if a given consuming app should have access to a given resource inside a scope.
+If scopes are empty, then provider app should not present any resources to consumer.
+
