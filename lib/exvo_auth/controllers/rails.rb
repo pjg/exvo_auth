@@ -6,8 +6,6 @@ module ExvoAuth::Controllers::Rails
   end
     
   module InstanceMethods
-    protected
-    
     def authenticate_app_in_scope!(scope)
       authenticate_or_request_with_http_basic do |consumer_id, access_token|
         @current_scopes = ExvoAuth::Autonomous::Provider.new(
@@ -19,6 +17,8 @@ module ExvoAuth::Controllers::Rails
       end
     end
 
+    protected
+    
     def find_user_by_id(id)
       User.find(id)
     end
