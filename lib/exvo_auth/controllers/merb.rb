@@ -12,12 +12,14 @@ module ExvoAuth::Controllers::Merb
 
     def authenticate_app_in_scope!(scope)    
       basic_authentication do |consumer_id, access_token|
-        @current_scopes = ExvoAuth::Autonomous::Provider.new(
+        current_scopes = ExvoAuth::Autonomous::Provider.new(
           :consumer_id  => consumer_id,
           :access_token => access_token
         ).scopes
 
-        @current_scopes.include?(scope)
+        @current_consumer_id = consumer_id
+
+        current_scopes.include?(scope)
       end
     end
     

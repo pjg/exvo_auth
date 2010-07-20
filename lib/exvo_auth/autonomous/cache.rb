@@ -4,11 +4,17 @@ class ExvoAuth::Autonomous::Cache
   end
   
   def read(key)
-    @data[key]
+    o = @data[key]
+    o[:value] if o && (now - o[:timestamp]) < 3600 # cache for one hour
   end
   
   def write(key, value)
-    @data[key] = value
+    @data[key] = {
+      :value     => value,
+      :timestamp => now
+    }
+    
+    value
   end
   
   def fetch(key)
@@ -17,5 +23,11 @@ class ExvoAuth::Autonomous::Cache
     else
       read(key)
     end
+  end
+  
+  private
+  
+  def now
+    Time.now
   end
 end

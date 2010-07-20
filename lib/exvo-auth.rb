@@ -18,6 +18,7 @@ module ExvoAuth
   end
   
   module Autonomous
+    autoload :Base,     'exvo_auth/autonomous/base'
     autoload :Consumer, 'exvo_auth/autonomous/consumer'
     autoload :Provider, 'exvo_auth/autonomous/provider'
     autoload :Cache,    'exvo_auth/autonomous/cache'

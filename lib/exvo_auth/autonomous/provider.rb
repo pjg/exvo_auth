@@ -1,17 +1,7 @@
-class ExvoAuth::Autonomous::Provider
-  attr_reader :options
-  @@cache = ExvoAuth::Autonomous::Cache.new
-  
+class ExvoAuth::Autonomous::Provider < ExvoAuth::Autonomous::Base
   def initialize(options = {})
-    options[:site]          ||= ExvoAuth::Config.host
-    options[:client_id]     ||= ExvoAuth::Config.client_id
-    options[:client_secret] ||= ExvoAuth::Config.client_secret
-
-    if options[:site].nil? || options[:client_id].nil? || options[:client_secret].nil? || options[:consumer_id].nil? || options[:access_token].nil?
-      raise(ArgumentError, "Please configure site, client_id, client_secret, consumer_id and access_token")
-    end
-
-    @options = options
+    super
+    validate_options!(:consumer_id, :access_token)
   end
   
   def scopes
@@ -21,7 +11,7 @@ class ExvoAuth::Autonomous::Provider
   end
   
   def scopes!
-    response = HTTParty.get("/apps/provider/authorizations/#{options[:consumer_id]}.json",
+    response = httparty.get("/apps/provider/authorizations/#{options[:consumer_id]}.json",
       :base_uri   => options[:site], 
       :basic_auth => { 
         :username => options[:client_id],
@@ -30,6 +20,8 @@ class ExvoAuth::Autonomous::Provider
       :query => { :access_token => options[:access_token] }
     )
 
-    @@cache.write(options, response["scope"].to_s.split)
+    if scope = response["scope"] # only cache positive responses
+      @@cache.write(options, scope.split)
+    end
   end
 end

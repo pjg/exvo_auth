@@ -1,17 +1,7 @@
-class ExvoAuth::Autonomous::Consumer
-  attr_reader :options
-  @@cache = ExvoAuth::Autonomous::Cache.new
-  
+class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   def initialize(options = {})
-    options[:site]          ||= ExvoAuth::Config.host
-    options[:client_id]     ||= ExvoAuth::Config.client_id
-    options[:client_secret] ||= ExvoAuth::Config.client_secret
-    
-    if options[:site].nil? || options[:client_id].nil? || options[:client_secret].nil? || options[:provider_id].nil?
-      raise(ArgumentError, "Please configure site, client_id, client_secret and provider_id")
-    end
-
-    @options = options
+    super
+    validate_options!(:provider_id)
   end
   
   def access_token
@@ -21,7 +11,7 @@ class ExvoAuth::Autonomous::Consumer
   end
   
   def access_token!
-    response = HTTParty.get("/apps/consumer/authorizations/#{options[:provider_id]}.json", 
+    response = httparty.get("/apps/consumer/authorizations/#{options[:provider_id]}.json", 
       :base_uri   => options[:site], 
       :basic_auth => { 
         :username => options[:client_id],

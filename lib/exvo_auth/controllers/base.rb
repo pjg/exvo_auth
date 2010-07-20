@@ -46,6 +46,10 @@ module ExvoAuth::Controllers::Base
     return @current_user if defined?(@current_user)
     @current_user = session[:user_id] && find_user_by_id(session[:user_id])
   end
+  
+  def current_consumer_id
+    @current_consumer_id
+  end
 
   def signed_in?
     !!current_user
