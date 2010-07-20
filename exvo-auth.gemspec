@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "exvo-auth.gemspec",
      "lib/exvo-auth.rb",
+     "lib/exvo_auth/autonomous/base.rb",
      "lib/exvo_auth/autonomous/cache.rb",
      "lib/exvo_auth/autonomous/consumer.rb",
      "lib/exvo_auth/autonomous/provider.rb",
@@ -57,19 +58,19 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<oa-oauth>, ["= 0.0.1"])
       s.add_runtime_dependency(%q<httparty>, [">= 0.6.1"])
-      s.add_development_dependency(%q<mocha>, ["= 0.9.8"])
-      s.add_development_dependency(%q<test-unit>, ["= 2.1.0"])
+      s.add_development_dependency(%q<mocha>, [">= 0.9.8"])
+      s.add_development_dependency(%q<test-unit>, [">= 2.1.0"])
     else
       s.add_dependency(%q<oa-oauth>, ["= 0.0.1"])
       s.add_dependency(%q<httparty>, [">= 0.6.1"])
-      s.add_dependency(%q<mocha>, ["= 0.9.8"])
-      s.add_dependency(%q<test-unit>, ["= 2.1.0"])
+      s.add_dependency(%q<mocha>, [">= 0.9.8"])
+      s.add_dependency(%q<test-unit>, [">= 2.1.0"])
     end
   else
     s.add_dependency(%q<oa-oauth>, ["= 0.0.1"])
     s.add_dependency(%q<httparty>, [">= 0.6.1"])
-    s.add_dependency(%q<mocha>, ["= 0.9.8"])
-    s.add_dependency(%q<test-unit>, ["= 2.1.0"])
+    s.add_dependency(%q<mocha>, [">= 0.9.8"])
+    s.add_dependency(%q<test-unit>, [">= 2.1.0"])
   end
 end
 
