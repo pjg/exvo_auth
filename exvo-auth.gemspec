@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{exvo-auth}
-  s.version = "0.7.0"
+  s.version = "0.7.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jacek Becela"]
@@ -37,7 +37,8 @@ Gem::Specification.new do |s|
      "lib/exvo_auth/strategies/interactive.rb",
      "lib/exvo_auth/strategies/non_interactive.rb",
      "test/helper.rb",
-     "test/test_exvo_auth.rb"
+     "test/test_exvo_auth.rb",
+     "test/test_integration.rb"
   ]
   s.homepage = %q{http://github.com/Exvo/Auth}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -46,7 +47,8 @@ Gem::Specification.new do |s|
   s.summary = %q{Sign in with Exvo account}
   s.test_files = [
     "test/helper.rb",
-     "test/test_exvo_auth.rb"
+     "test/test_exvo_auth.rb",
+     "test/test_integration.rb"
   ]
 
   if s.respond_to? :specification_version then

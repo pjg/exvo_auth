@@ -50,7 +50,7 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   end
   
   def authorization!
-    response = httparty.get("/apps/consumer/authorizations/#{params[:provider_id]}.json", 
+    response = httparty.get("/apps/consumer/authorizations/#{URI.escape(params[:provider_id])}.json", 
       :base_uri   => params[:site], 
       :basic_auth => { 
         :username => params[:client_id],

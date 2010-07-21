@@ -1,6 +1,7 @@
 require 'omniauth/oauth'
 require 'multi_json'
 require 'httparty'
+require 'uri'
 
 module ExvoAuth
   autoload :Config, 'exvo_auth/config'

@@ -11,7 +11,7 @@ class ExvoAuth::Autonomous::Provider < ExvoAuth::Autonomous::Base
   end
   
   def scopes!
-    response = httparty.get("/apps/provider/authorizations/#{params[:consumer_id]}.json",
+    response = httparty.get("/apps/provider/authorizations/#{URI.escape(params[:consumer_id])}.json",
       :base_uri   => params[:site], 
       :basic_auth => { 
         :username => params[:client_id],
@@ -20,10 +20,10 @@ class ExvoAuth::Autonomous::Provider < ExvoAuth::Autonomous::Base
       :query => { :access_token => params[:access_token] }
     )
 
-    if scope = response["scope"] # only cache positive responses
+    if scope = response["scope"] 
       @@cache.write(params, scope.split)
     else
-      []
+      [] # only cache positive responses
     end
   end
 end
