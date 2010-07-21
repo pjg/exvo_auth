@@ -14,15 +14,13 @@ Gem::Specification.new do |s|
   s.email = %q{jacek.becela@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README",
-     "TODO"
+     "README"
   ]
   s.files = [
     ".gitignore",
      "LICENSE",
      "README",
      "Rakefile",
-     "TODO",
      "VERSION",
      "exvo-auth.gemspec",
      "lib/exvo-auth.rb",
