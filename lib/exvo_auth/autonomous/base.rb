@@ -1,20 +1,20 @@
 class ExvoAuth::Autonomous::Base
-  attr_reader :options
+  attr_reader :params
   @@cache = ExvoAuth::Autonomous::Cache.new
   
-  def initialize(options = {})
-    options[:site]          ||= ExvoAuth::Config.host
-    options[:client_id]     ||= ExvoAuth::Config.client_id
-    options[:client_secret] ||= ExvoAuth::Config.client_secret
-    @options = options
+  def initialize(params = {})
+    params[:site]          ||= ExvoAuth::Config.host
+    params[:client_id]     ||= ExvoAuth::Config.client_id
+    params[:client_secret] ||= ExvoAuth::Config.client_secret
+    @params = params
     
-    validate_options!(:site, :client_id, :client_secret)
+    validate_params!(:site, :client_id, :client_secret)
   end
   
   protected
   
-  def validate_options!(*keys)
-    missing = keys - options.keys
+  def validate_params!(*keys)
+    missing = keys - params.keys
     raise(ArgumentError, "Please configure following keys: #{missing.join(", ")}") if missing.any?
   end
   

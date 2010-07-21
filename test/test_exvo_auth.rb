@@ -8,19 +8,35 @@ class TestExvoAuth < Test::Unit::TestCase
   
   test "consumer sanity" do
     c = ExvoAuth::Autonomous::Consumer.new(:provider_id => "baz")
-    httparty = stub(:get => {"access_token" => "qux"})
+    authorization = { "access_token" => "qux", "url" => "https://foo/api" }
+    httparty = stub(:get => { "authorization" => authorization })
     c.expects(:httparty).returns(httparty)
     
-    assert_equal "qux", c.access_token
-    assert_equal "qux", c.access_token # second time from cache, without touching httparty
+    assert_equal authorization, c.send(:authorization)
+    assert_equal authorization, c.send(:authorization) # second time from cache, without touching httparty
   end
 
   test "provider sanity" do
-    c = ExvoAuth::Autonomous::Provider.new(:consumer_id => "baz", :access_token => "qux")
+    p = ExvoAuth::Autonomous::Provider.new(:consumer_id => "baz", :access_token => "qux")
     httparty = stub(:get => {"scope" => "qux quux"})
-    c.expects(:httparty).returns(httparty)
+    p.expects(:httparty).returns(httparty)
     
-    assert_equal ["qux", "quux"], c.scopes
-    assert_equal ["qux", "quux"], c.scopes # second time from cache, without touching httparty
+    assert_equal ["qux", "quux"], p.scopes
+    assert_equal ["qux", "quux"], p.scopes # second time from cache, without touching httparty
+  end
+  
+  test "integration of httparty interface with auth" do
+    c = ExvoAuth::Autonomous::Consumer.new(:provider_id => "baz")
+    basement = mock("basement")
+    basement.expects(:base_uri)
+    basement.expects(:basic_auth)
+    basement.expects(:get).with("/bar").returns(true)
+    c.expects(:basement).at_least_once.returns(basement)
+    assert_true c.get("/bar")
+  end
+  
+  test "basement includes httparty" do
+    c = ExvoAuth::Autonomous::Consumer.new(:provider_id => "baz")
+    assert_true c.send(:basement).included_modules.include?(HTTParty)
   end
 end
