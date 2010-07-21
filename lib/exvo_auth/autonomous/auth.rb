@@ -1,6 +1,15 @@
 class ExvoAuth::Autonomous::Auth
-  include HTTParty
-
-  base_uri(ExvoAuth::Config.host)
-  basic_auth(ExvoAuth::Config.client_id, ExvoAuth::Config.client_secret)
+  include ExvoAuth::Autonomous::Http
+  
+  def base_uri
+    ExvoAuth::Config.host
+  end
+  
+  def username
+    ExvoAuth::Config.client_id
+  end
+  
+  def password
+    ExvoAuth::Config.client_secret
+  end
 end

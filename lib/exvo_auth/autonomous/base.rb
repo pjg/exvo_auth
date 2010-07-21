@@ -20,6 +20,6 @@ class ExvoAuth::Autonomous::Base
   
   # Makes testing easy
   def auth
-    ExvoAuth::Autonomous::Auth
+    ExvoAuth::Autonomous::Auth.new
   end
 end

@@ -1,46 +1,21 @@
 class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
+  include ExvoAuth::Autonomous::Http
+  
   def initialize(params = {})
     super
     validate_params!(:provider_id)
   end
-
-  def get(*args)
-    http.get(*args)
-  end
-
-  def post(*args)
-    http.post(*args)
-  end
-
-  def put(*args)
-    http.put(*args)
-  end
-
-  def delete(*args)
-    http.delete(*args)
-  end
-
-  def head(*args)
-    http.head(*args)
-  end
-
-  def options(*args)
-    http.options(*args)
+  
+  def base_uri
+    authorization["url"]
   end
   
-  protected
-  
-  # Url and Token set on each request so expired authorization will cause re-authorization.
-  def http
-    basement.base_uri(authorization["url"])
-    basement.basic_auth(params[:client_id], authorization["access_token"])
-    basement
+  def username
+    params[:client_id]
   end
   
-  def basement
-    @basement ||= Class.new do
-      include HTTParty
-    end
+  def password
+    authorization["access_token"]
   end
   
   def authorization

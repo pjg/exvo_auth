@@ -24,6 +24,7 @@ module ExvoAuth
     autoload :Provider, 'exvo_auth/autonomous/provider'
     autoload :Cache,    'exvo_auth/autonomous/cache'
     autoload :Auth,     'exvo_auth/autonomous/auth'
+    autoload :Http,     'exvo_auth/autonomous/http'
   end
   
   module OAuth2
