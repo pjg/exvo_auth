@@ -9,8 +9,8 @@ class TestExvoAuth < Test::Unit::TestCase
   test "consumer sanity" do
     c = ExvoAuth::Autonomous::Consumer.new(:provider_id => "baz")
     authorization = { "access_token" => "qux", "url" => "https://foo/api" }
-    httparty = stub(:get => { "authorization" => authorization })
-    c.expects(:httparty).returns(httparty)
+    auth = stub(:get => { "authorization" => authorization })
+    c.expects(:auth).returns(auth)
     
     assert_equal authorization, c.send(:authorization)
     assert_equal authorization, c.send(:authorization) # second time from cache, without touching httparty
@@ -18,8 +18,8 @@ class TestExvoAuth < Test::Unit::TestCase
 
   test "provider sanity" do
     p = ExvoAuth::Autonomous::Provider.new(:consumer_id => "baz", :access_token => "qux")
-    httparty = stub(:get => {"scope" => "qux quux"})
-    p.expects(:httparty).returns(httparty)
+    auth = stub(:get => {"scope" => "qux quux"})
+    p.expects(:auth).returns(auth)
     
     assert_equal ["qux", "quux"], p.scopes
     assert_equal ["qux", "quux"], p.scopes # second time from cache, without touching httparty

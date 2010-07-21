@@ -19,7 +19,7 @@ module ExvoAuth::Controllers::Merb
 
         @current_consumer_id = consumer_id
 
-        current_scopes.include?(scope)
+        current_scopes.include?(scope) && request.ssl?
       end
     end
     

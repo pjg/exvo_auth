@@ -11,12 +11,7 @@ class ExvoAuth::Autonomous::Provider < ExvoAuth::Autonomous::Base
   end
   
   def scopes!
-    response = httparty.get("/apps/provider/authorizations/#{URI.escape(params[:consumer_id])}.json",
-      :base_uri   => params[:site], 
-      :basic_auth => { 
-        :username => params[:client_id],
-        :password => params[:client_secret]
-      },
+    response = auth.get("/apps/provider/authorizations/#{URI.escape(params[:consumer_id])}.json",
       :query => { :access_token => params[:access_token] }
     )
 

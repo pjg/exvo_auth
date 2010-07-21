@@ -19,7 +19,7 @@ class ExvoAuth::Autonomous::Base
   end
   
   # Makes testing easy
-  def httparty
-    HTTParty 
+  def auth
+    ExvoAuth::Autonomous::Auth
   end
 end
