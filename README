@@ -31,7 +31,8 @@ The following comes from Rails config/routes.rb file:
 
   match "/auth/failure"                  => "sessions#failure"
   match "/auth/interactive/callback"     => "sessions#create"
-  match "/auth/non_interactive/callback" => "sessions#create"
+  match "/auth/non_interactive/callback" => "sessions#create" # only if you use json-based login
+  match "/sign_out"                      => "sessions#destroy"
 
 Failure url is called whenever there's a failure (d'oh).
 You can have separate callbacks for interactive and non-interactive
