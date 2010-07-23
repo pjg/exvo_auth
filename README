@@ -98,17 +98,16 @@ Inter-Application Communication
 consumer = ExvoAuth::Autonomous::Consumer.new(
   :provider_id => "this is client_id of the app you want to connect to"
 )
-consumer.access_token => "this is the access token to use along with your client_id to communicate with providing app"
+consumer.get(*args) - interface is exactly the same like in HTTParty. All http methods are available (post, put, delete, head, options).
 
 
 # Provider side
 
-provider = ExvoAuth::Autonomous::Provider.new(
-  :consumer_id   => "the client_id of the consuming app",
-  :access_token  => "the access_token of the consuming app"
-)
-provider.scopes => ["users", "payments"] # example access scopes defined in auth server.
-
+See #authenticate_app_in_scope!(scope) method in ExvoAuth::Controllers::Rails (or Merb). This method lets you create a before filter.
 Scopes are used by providing app to check if a given consuming app should have access to a given resource inside a scope.
 If scopes are empty, then provider app should not present any resources to consumer.
+
+# Example of the before filter for provider controller:
+
+before_filter {|c| c.authenticate_app_in_scope!("payments") }
 
