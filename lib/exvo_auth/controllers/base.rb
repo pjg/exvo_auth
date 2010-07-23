@@ -14,7 +14,7 @@ module ExvoAuth::Controllers::Base
       if callback_value
         redirect_to non_interactive_sign_in_path(callback_key => callback_value)
       else
-        redirect_to "/auth/interactive"
+        redirect_to sign_in_path
       end
     end
   end
@@ -40,6 +40,14 @@ module ExvoAuth::Controllers::Base
     session.delete(:user_id)
     @current_user = nil
     redirect_to sign_out_url(return_to)
+  end
+  
+  def sign_in_path
+    "/auth/interactive"
+  end
+  
+  def sign_up_path
+    "/auth/interactive?x_sign_up=true"
   end
   
   def current_user

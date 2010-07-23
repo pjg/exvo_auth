@@ -77,7 +77,15 @@ end
 In short: you get params[:auth]. Do what you want to do with it: store the data, create session, etc.
 
 
-6. Read the source, there are few features not mentioned in this README.
+6. Sign up and sign in paths for use in links.
+
+sign in path: "/auth/interactive"
+sign up path: "/auth/interactive?x_sign_up=true" # this is OAuth2 custom param
+
+You have a handy methods available in controllers (and views in Rails): sign_in_path and sign_up_path.
+
+
+7. Read the source, there are few features not mentioned in this README.
 
 
 Inter-Application Communication
