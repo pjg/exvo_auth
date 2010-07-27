@@ -57,7 +57,7 @@ Sample implementation (Rails):
 
 class SessionsController < ApplicationController
   def create
-    auth = params[:auth]
+    auth = params[:auth] # sometimes you will need to do this: request.env["rack.request.query_hash"]["auth"]
     user = User.find_or_create_by_uid(auth["uid"])
     
     user_info = auth["user_info"]
