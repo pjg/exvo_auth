@@ -18,12 +18,26 @@ module ExvoAuth::Controllers::Merb
         ).scopes
 
         @current_consumer_id = consumer_id
-
-        current_scopes.include?(scope) && request.ssl?
+        
+        if !request.ssl?
+          error("Auth: SSL not configured")
+          return false
+        end
+        
+        if !current_scopes.include?(scope)
+          error("Auth: Requested scope (#{scope}) not in a list: #{current_scopes.join(', ')}")
+          return false
+        end
+        
+        true
       end
     end
     
     protected
+    
+    def error(message)
+      Merb.logger.error(message) if defined?(Merb.logger)
+    end
 
     def redirect_to(*args)
       redirect(*args)
