@@ -2,7 +2,7 @@ module ExvoAuth::Controllers::Base
   def self.included(base)
     raise "Please define a #root_url method in #{base.name} (or in routes)" unless base.method_defined? :root_url
   end
-
+  
   # A before filter to protect your sensitive actions.
   def authenticate_user!
     if !signed_in?
@@ -41,6 +41,21 @@ module ExvoAuth::Controllers::Base
     @current_user = nil
     redirect_to sign_out_url(return_to)
   end
+
+  def authenticate_app_in_scope!(scope)    
+    raise("SSL not configured") unless request.ssl?
+
+    send(basic_authentication_method_name) do |consumer_id, access_token|
+      current_scopes = ExvoAuth::Autonomous::Provider.new(
+        :consumer_id  => consumer_id,
+        :access_token => access_token
+      ).scopes
+
+      @current_consumer_id = consumer_id
+      
+      current_scopes.include?(scope)
+    end
+  end
   
   def sign_in_path
     "/auth/interactive"
@@ -62,7 +77,7 @@ module ExvoAuth::Controllers::Base
   def signed_in?
     !!current_user
   end
-  
+
   protected
 
   def store_location!

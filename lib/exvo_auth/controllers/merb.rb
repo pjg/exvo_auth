@@ -9,34 +9,11 @@ module ExvoAuth::Controllers::Merb
       super
       throw :halt unless signed_in?
     end
-
-    def authenticate_app_in_scope!(scope)    
-      basic_authentication do |consumer_id, access_token|
-        current_scopes = ExvoAuth::Autonomous::Provider.new(
-          :consumer_id  => consumer_id,
-          :access_token => access_token
-        ).scopes
-
-        @current_consumer_id = consumer_id
-        
-        if !request.ssl?
-          error("Auth: SSL not configured")
-          return false
-        end
-        
-        if !current_scopes.include?(scope)
-          error("Auth: Requested scope (#{scope}) not in a list: #{current_scopes.join(', ')}")
-          return false
-        end
-        
-        true
-      end
-    end
     
     protected
-    
-    def error(message)
-      Merb.logger.error(message) if defined?(Merb.logger)
+
+    def basic_authentication_method_name
+      :basic_authentication
     end
 
     def redirect_to(*args)
