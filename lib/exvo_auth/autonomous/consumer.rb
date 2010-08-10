@@ -11,7 +11,7 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   end
   
   def username
-    params[:client_id]
+    ExvoAuth::Config.client_id
   end
   
   def password

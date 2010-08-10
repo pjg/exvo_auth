@@ -13,5 +13,4 @@ class TestIntegration < Test::Unit::TestCase
     assert_true authorization["access_token"].size > 0
     assert_equal "https://bar/api", authorization["url"]
   end
-  
 end
