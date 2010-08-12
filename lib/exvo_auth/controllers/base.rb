@@ -53,7 +53,7 @@ module ExvoAuth::Controllers::Base
 
       @current_consumer_id = consumer_id
       
-      current_scopes.include?(scope)
+      current_scopes.include?(scope.to_s)
     end
   end
   
