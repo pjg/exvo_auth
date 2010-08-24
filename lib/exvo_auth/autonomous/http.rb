@@ -7,8 +7,11 @@ module ExvoAuth::Autonomous::Http
     http.post(*args)
   end
 
-  def put(*args)
-    http.put(*args)
+  def put(path, options = {})
+    # This fixes 411 responses from nginx (on heroku) 
+    # when Content-Length is missing on put requests.
+    options[:body] ||= ""
+    http.put(path, options)
   end
 
   def delete(*args)
