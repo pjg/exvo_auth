@@ -15,6 +15,6 @@ class ExvoAuth::Autonomous::Base
   
   # Makes testing easy
   def auth
-    ExvoAuth::Autonomous::Auth.new
+    ExvoAuth::Autonomous::Auth.instance
   end
 end

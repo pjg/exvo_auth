@@ -1,4 +1,5 @@
 class ExvoAuth::Autonomous::Auth
+  include Singleton
   include ExvoAuth::Autonomous::Http
   
   def base_uri
