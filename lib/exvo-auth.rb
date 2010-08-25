@@ -1,3 +1,4 @@
+require 'oauth2'
 require 'omniauth/oauth'
 require 'multi_json'
 require 'httparty'

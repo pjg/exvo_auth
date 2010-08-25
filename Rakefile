@@ -9,10 +9,10 @@ begin
     gem.email = "jacek.becela@gmail.com"
     gem.homepage = "http://github.com/Exvo/Auth"
     gem.authors = ["Jacek Becela"]
-    gem.add_dependency "oa-oauth"
-    gem.add_dependency "httparty", ">= 0.6.1"
-    gem.add_development_dependency "mocha", ">= 0.9.8"
-    gem.add_development_dependency "test-unit", ">= 2.1.0"
+    gem.add_dependency "oa-oauth", "~> 0.0.4"
+    gem.add_dependency "httparty", "~> 0.6.1"
+    gem.add_development_dependency "mocha", "~> 0.9.8"
+    gem.add_development_dependency "test-unit", "~> 2.1.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
