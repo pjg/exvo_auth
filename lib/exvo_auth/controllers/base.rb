@@ -43,7 +43,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def authenticate_app_in_scope!(scope)    
-    raise("SSL not configured") unless request.ssl?
+    raise("SSL not configured") unless request.ssl? || ExvoAuth::Config.require_ssl == false
 
     send(basic_authentication_method_name) do |consumer_id, access_token|
       current_scopes = ExvoAuth::Autonomous::Provider.new(

@@ -30,4 +30,13 @@ module ExvoAuth::Config
   def self.client_secret
     @@client_secret
   end
+  
+  # Set this to false during development ONLY!
+  def self.require_ssl=(require_ssl)
+    @@require_ssl = require_ssl
+  end
+  
+  def self.require_ssl
+    @@require_ssl ||= true
+  end
 end
