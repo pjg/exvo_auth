@@ -37,6 +37,10 @@ module ExvoAuth::Config
   end
   
   def self.require_ssl
-    @@require_ssl ||= true
+    if @@require_ssl.nil?
+      @@require_ssl = true
+    else
+      @@require_ssl
+    end
   end
 end
