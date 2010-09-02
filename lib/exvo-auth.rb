@@ -3,9 +3,11 @@ require 'omniauth/oauth'
 require 'multi_json'
 require 'httparty'
 require 'uri'
+require 'base64'
 
 module ExvoAuth
   autoload :Config, 'exvo_auth/config'
+  autoload :Dejavu, 'exvo_auth/dejavu'
   
   module Strategies
     autoload :Base,           'exvo_auth/strategies/base'

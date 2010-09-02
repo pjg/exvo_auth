@@ -24,8 +24,12 @@ module ExvoAuth::Controllers::Merb
       User[id]
     end
 
-    def current_url
-      request.full_uri if request.method == :get
+    def current_request
+      {
+        :url    => request.full_uri,
+        :method => request.method,
+        :params => request.params
+      }
     end
   end
 end

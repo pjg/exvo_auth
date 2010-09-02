@@ -1,12 +1,8 @@
 module ExvoAuth::Controllers::Base
-  def self.included(base)
-    raise "Please define a #root_url method in #{base.name} (or in routes)" unless base.method_defined? :root_url
-  end
-  
   # A before filter to protect your sensitive actions.
   def authenticate_user!
     if !signed_in?
-      store_location!
+      store_request!
 
       callback_key   = ExvoAuth::Config.callback_key
       callback_value = params[callback_key]
@@ -22,21 +18,19 @@ module ExvoAuth::Controllers::Base
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!(user_id)
     session[:user_id] = user_id
-    
+
     url = if params[:state] == "popup"
       ExvoAuth::Config.host + "/close_popup.html"
     else
-      stored_location || root_url
+      request_replay_url || "/"
     end
-    
+
     redirect_to url
   end
-  
-  # Redirect to sign_out_url, signs out and redirects back to root_path (by default).
-  # This method assumes you have a "root_url" method defined in your controller.
-  #
+
+  # Redirect to sign_out_url, signs out and redirects back to "/" (by default).
   # Usuallly this method is called from your sessions#destroy.
-  def sign_out_and_redirect!(return_to = root_url)
+  def sign_out_and_redirect!(return_to = "/")
     session.delete(:user_id)
     @current_user = nil
     redirect_to sign_out_url(return_to)
@@ -80,14 +74,6 @@ module ExvoAuth::Controllers::Base
 
   protected
 
-  def store_location!
-    session[:return_to] = current_url
-  end
-  
-  def stored_location
-    session.delete(:return_to)
-  end
-
   def sign_out_url(return_to)
     ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
   end
@@ -96,5 +82,23 @@ module ExvoAuth::Controllers::Base
     path  = "/auth/non_interactive"
     query = Rack::Utils.build_query(params)
     query.empty? ? path : "#{path}?#{query}"
+  end
+
+  def store_request!
+    session[:stored_request] = Base64.encode64(MultiJson.encode(current_request))
+  end
+  
+  def current_request
+    {
+      :url    => request.url,
+      :method => request.request_method,
+      :params => request.params
+    }
+  end
+
+  def request_replay_url
+    if stored_request = session.delete(:stored_request)
+      "/auth/replay/#{stored_request}"
+    end
   end
 end
