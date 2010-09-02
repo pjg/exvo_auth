@@ -84,21 +84,24 @@ module ExvoAuth::Controllers::Base
     query.empty? ? path : "#{path}?#{query}"
   end
 
+  def current_request
+    {
+      :script_name  => request.script_name,
+      :path_info    => request.path_info,
+      :method       => request_method,
+      :params       => request.params, # GET + POST params together. no uploads and other crazy shit please ;)
+      :content_type => request.content_type
+    }
+  end
+
   def store_request!
     session[:stored_request] = Base64.encode64(MultiJson.encode(current_request))
   end
   
-  def current_request
-    {
-      :url    => request.url,
-      :method => request.request_method,
-      :params => request.params
-    }
-  end
-
   def request_replay_url
     if stored_request = session.delete(:stored_request)
       "/auth/replay/#{stored_request}"
     end
   end
+  
 end

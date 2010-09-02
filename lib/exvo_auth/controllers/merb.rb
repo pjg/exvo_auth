@@ -12,6 +12,10 @@ module ExvoAuth::Controllers::Merb
     
     protected
 
+    def request_method
+      request.method.to_s.upcase
+    end
+
     def basic_authentication_method_name
       :basic_authentication
     end
@@ -22,14 +26,6 @@ module ExvoAuth::Controllers::Merb
     
     def find_user_by_id(id)
       User[id]
-    end
-
-    def current_request
-      {
-        :url    => request.full_uri,
-        :method => request.method,
-        :params => request.params
-      }
     end
   end
 end

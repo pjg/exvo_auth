@@ -8,6 +8,10 @@ module ExvoAuth::Controllers::Rails
   module InstanceMethods    
     protected
     
+    def request_method
+      request.request_method
+    end
+    
     def basic_authentication_method_name
       :authenticate_or_request_with_http_basic
     end    

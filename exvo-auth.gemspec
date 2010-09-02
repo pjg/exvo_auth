@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{exvo-auth}
-  s.version = "0.8.2"
+  s.version = "0.9.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jacek Becela"]
-  s.date = %q{2010-08-30}
+  s.date = %q{2010-09-02}
   s.description = %q{Sign in with Exvo account}
   s.email = %q{jacek.becela@gmail.com}
   s.extra_rdoc_files = [
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "lib/exvo_auth/controllers/base.rb",
      "lib/exvo_auth/controllers/merb.rb",
      "lib/exvo_auth/controllers/rails.rb",
+     "lib/exvo_auth/dejavu.rb",
      "lib/exvo_auth/oauth2.rb",
      "lib/exvo_auth/strategies/base.rb",
      "lib/exvo_auth/strategies/interactive.rb",
