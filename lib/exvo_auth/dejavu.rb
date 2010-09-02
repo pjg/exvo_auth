@@ -1,18 +1,17 @@
 class ExvoAuth::Dejavu
   def initialize(app)
     @app    = app
-    @prefix = "/auth/dejavu"
   end
   
   def call(env)
-    dejavu(env) if Rack::Request.new(env).path.start_with?(@prefix)
+    dejavu(env) if Rack::Request.new(env).path == "/auth/dejavu"
     @app.call(env)
   end
   
   private
   
   def dejavu(env)
-    data = MultiJson.decode(Base64.decode64(Rack::Request.new(env).path.slice(@prefix.size..-1)))
+    data = MultiJson.decode(Base64.decode64(Rack::Request.new(env).params["stored_request"]))
 
     env["QUERY_STRING"]   = Rack::Utiles.build_query(data[:params]) # Will not work with file uploads.
     env["SCRIPT_NAME"]    = data[:script_name]

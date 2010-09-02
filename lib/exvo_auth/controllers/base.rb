@@ -100,7 +100,7 @@ module ExvoAuth::Controllers::Base
   
   def request_replay_url
     if stored_request = session.delete(:stored_request)
-      "/auth/replay/#{stored_request}"
+      ["/auth/dejavu", Rack::Utils.build_query(:stored_request => stored_request)].join("?")
     end
   end
   
