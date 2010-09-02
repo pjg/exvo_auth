@@ -100,7 +100,13 @@ module ExvoAuth::Controllers::Base
   
   def request_replay_url
     if stored_request = session.delete(:stored_request)
-      ["/auth/dejavu", Rack::Utils.build_query(:stored_request => stored_request)].join("?")
+      decoded = MultiJson.decode(Base64.decode64(stored_request))
+      if decoded["method"] == "GET"
+        qs = decoded["query_string"]
+        decoded["script_name"] + decoded["path_info"] + (qs ? "?" + qs : "")
+      else
+        "/auth/dejavu?" + Rack::Utils.build_query(:stored_request => stored_request)
+      end
     end
   end
   
