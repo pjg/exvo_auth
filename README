@@ -10,19 +10,13 @@ OAuth2
 1. Install exvo-auth gem or add it to your Gemfile.
 
 
-2. Configure middleware(s).
+2. Configure middleware.
 
-There are two middlewares. Usually you will need the "interactive" one:
-
-  ExvoAuth::Strategies::Interactive
-  ExvoAuth::Strategies::NonInteractive
-  
-Both middlewares need client_id and client_secret configured.
 In Rails, the relevant lines could look like this:
 
   ExvoAuth::Config.client_id     = "foo"
   ExvoAuth::Config.client_secret = "bar" 
-  config.middleware.use ExvoAuth::Strategies::Interactive
+  config.middleware.use ExvoAuth::Middleware
 
     
 3. Add routes.
@@ -38,14 +32,6 @@ Failure url is called whenever there's a failure (d'oh).
 You can have separate callbacks for interactive and non-interactive
 callback routes but you can also route both callbacks to the same controller method
 like shown above.
-
-You also need a root_url route defined in routes (Rails) or this little hack (Merb):
-
-Merb::Controller.class_eval do
-  def root_url
-    absolute_url("/foo") # probably a "/"
-  end
-end
 
 4. Include controller helpers into your application controller.
 
@@ -91,7 +77,6 @@ You have a handy methods available in controllers (and views in Rails): sign_in_
 
 Inter-Application Communication
 ===============================
-
 
 # Consumer side
 
