@@ -20,7 +20,7 @@ module ExvoAuth::Config
   end
   
   def self.client_id
-    @@client_id
+    @@client_id ||= nil
   end
   
   def self.client_secret=(client_secret)
@@ -28,7 +28,7 @@ module ExvoAuth::Config
   end
   
   def self.client_secret
-    @@client_secret
+    @@client_secret ||= nil 
   end
   
   # Set this to false during development ONLY!
@@ -37,10 +37,7 @@ module ExvoAuth::Config
   end
   
   def self.require_ssl
-    if @@require_ssl.nil?
-      @@require_ssl = true
-    else
-      @@require_ssl
-    end
+    @@require_ssl = true unless defined?(@@require_ssl)
+    @@require_ssl
   end
 end
