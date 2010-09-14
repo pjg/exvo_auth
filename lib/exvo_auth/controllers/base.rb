@@ -85,13 +85,14 @@ module ExvoAuth::Controllers::Base
   end
 
   def current_request
-    {
-      :script_name  => request.script_name,
-      :path_info    => request.path_info,
-      :method       => request_method,
-      :params       => request.params, # GET + POST params together. no uploads and other crazy shit please ;)
-      :content_type => request.content_type
-    }
+    request.params.merge(
+      :_dejavu => {
+        :script_name  => request.script_name,
+        :path_info    => request.path_info,
+        :method       => request_method,
+        :content_type => request.content_type
+      }
+    )
   end
 
   def store_request!
@@ -100,12 +101,12 @@ module ExvoAuth::Controllers::Base
   
   def request_replay_url
     if stored_request = session.delete(:stored_request)
-      decoded = MultiJson.decode(Base64.decode64(stored_request))
-      if decoded["method"] == "GET"
-        qs = decoded["query_string"]
-        decoded["script_name"] + decoded["path_info"] + (qs ? "?" + qs : "")
+      params = MultiJson.decode(Base64.decode64(stored_request))
+      dejavu = params.delete("_dejavu")
+      if dejavu["method"] == "GET"
+        dejavu["script_name"] + dejavu["path_info"] + (params.any? ? "?" + Rack::Utils.build_nested_query(params) : "")
       else
-        "/auth/dejavu?" + Rack::Utils.build_query(:stored_request => stored_request)
+        "/auth/dejavu?" + Rack::Utils.build_nested_query(params.merge(:_dejavu => dejavu))
       end
     end
   end

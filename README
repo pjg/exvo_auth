@@ -96,3 +96,11 @@ If scopes are empty, then provider app should not present any resources to consu
 
 before_filter {|c| c.authenticate_app_in_scope!("payments") }
 
+
+Dejavu - replay non-GET requests after authentication redirects
+===============================================================
+
+Limitations: 
+
+* doesn't work with file uploads
+* all request params become query params when replayed
