@@ -85,7 +85,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def current_request
-    request.params.merge(
+    request.params.reject{ |k, v| ["controller", "action"].include?(k) }.merge(
       :_dejavu => {
         :script_name  => request.script_name,
         :path_info    => request.path_info,
