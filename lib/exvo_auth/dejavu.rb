@@ -15,8 +15,9 @@ class ExvoAuth::Dejavu
     dejavu = params.delete("_dejavu")
 
     env["QUERY_STRING"]   = Rack::Utils.build_nested_query(params) # Will not work with file uploads.
-    env["SCRIPT_NAME"]    = dejavu["script_name"]
-    env["PATH_INFO"]      = dejavu["path_info"]
+    env["SCRIPT_NAME"]    = dejavu["script_name"]  # for Rack::Request
+    env["PATH_INFO"]      = dejavu["path_info"]    # for Rack::Request
+    env["REQUEST_PATH"]   = dejavu["request_path"] # for Merb::Request
     env["REQUEST_METHOD"] = dejavu["method"]
     env["CONTENT_TYPE"]   = dejavu["content_type"]
   end
