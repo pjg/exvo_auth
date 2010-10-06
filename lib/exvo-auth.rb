@@ -39,6 +39,30 @@ module ExvoAuth
   end
 end
 
+def ExvoAuth.debug(name, message, level)
+  level = level.to_i
+  if level <= debug_level
+    puts name
+    if message.is_a?(String)
+      puts message
+    else
+      p message
+    end
+  end
+end
+
+# debug level values
+# 0 - no debugging
+# 1 - for normal debugging
+# 2 - includes secret values (password); such debug messages should not appear at public sites
+def ExvoAuth.debug_level=(new_level)
+  @@debug_level = new_level.to_i
+end
+
+def ExvoAuth.debug_level
+  @@debug_level ||= 0
+end
+
 OAuth2::Client.class_eval do
   def non_interactive; ExvoAuth::OAuth2::Strategy::NonInteractive.new(self) end
 end
