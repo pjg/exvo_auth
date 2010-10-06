@@ -26,7 +26,6 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   
   def authorization!
     response = auth.get("/apps/consumer/authorizations/#{URI.escape(params[:provider_id])}.json")
-    ExvoAuth.debug "Autonomous::Consumer#authorization!: response", response, 1
     
     if response["authorization"]
       @@cache.write(params, response["authorization"])
