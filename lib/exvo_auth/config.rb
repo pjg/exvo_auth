@@ -1,4 +1,13 @@
 module ExvoAuth::Config
+  def self.debug
+    @@debug = false unless defined?(@@debug)
+    @@debug
+  end
+
+  def self.debug=(debug)
+    @@debug = debug
+  end
+
   def self.host 
     @@host ||= 'https://auth.exvo.com' 
   end

@@ -5,6 +5,7 @@ class TestIntegration < Test::Unit::TestCase
     ExvoAuth::Config.host          = "https://staging.auth.exvo.com"
     ExvoAuth::Config.client_id     = "foo"
     ExvoAuth::Config.client_secret = "bar"
+    ExvoAuth::Config.debug         = true
   end
   
   test "integration with staging.auth.exvo.com" do

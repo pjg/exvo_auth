@@ -16,6 +16,7 @@ In Rails, the relevant lines could look like this:
 
   ExvoAuth::Config.client_id     = "foo"
   ExvoAuth::Config.client_secret = "bar" 
+  ExvoAuth::Config.debug         = true # dumps all HTTP traffic to STDERR, useful during development.
   config.middleware.use ExvoAuth::Middleware
 
     
@@ -77,6 +78,13 @@ You have a handy methods available in controllers (and views in Rails): sign_in_
 
 Inter-Application Communication
 ===============================
+
+You need to have "App Authorization" created by Exvo first.
+Contact us and provide following details:
+
+  * consumer_id - Id of an app that will be a consumer (this is you)
+  * provider_id - Id of the provider app
+  * scope       - The tag associated with the api you want to use in the provider app
 
 # Consumer side
 

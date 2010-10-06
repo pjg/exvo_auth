@@ -37,6 +37,7 @@ module ExvoAuth::Autonomous::Http
   def basement
     @basement ||= Class.new do
       include HTTParty
+      debug_output if ExvoAuth::Config.debug
     end
   end
 end
