@@ -30,7 +30,7 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
     if response["authorization"]
       @@cache.write(params, response["authorization"])
     else
-      raise "Unauthorized"
+      raise "Authorization not found. You need an auhorization to contact provider app (#{ params[:provider_id] })"
     end
   end
 end
