@@ -9,7 +9,7 @@ class TestIntegration < Test::Unit::TestCase
   end
   
   test "integration with staging.auth.exvo.com" do
-    c = ExvoAuth::Autonomous::Consumer.new(:provider_id => "bar")
+    c = ExvoAuth::Autonomous::Consumer.new(:app_id => "bar")
     authorization = c.send(:authorization)
     assert_true authorization["access_token"].size > 0
     assert_equal "https://bar/api", authorization["url"]

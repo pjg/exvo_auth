@@ -3,7 +3,7 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   
   def initialize(params = {})
     super
-    validate_params!(:provider_id)
+    validate_params!(:app_id)
   end
   
   def base_uri
@@ -25,12 +25,12 @@ class ExvoAuth::Autonomous::Consumer < ExvoAuth::Autonomous::Base
   end
   
   def authorization!
-    response = auth.get("/apps/consumer/authorizations/#{URI.escape(params[:provider_id])}.json")
+    response = auth.get("/apps/consumer/authorizations/#{URI.escape(params[:app_id])}.json")
     
     if response["authorization"]
       @@cache.write(params, response["authorization"])
     else
-      raise "Authorization not found. You need an auhorization to contact provider app (#{ params[:provider_id] })"
+      raise "Authorization not found. You need an auhorization to contact provider app (#{ params[:app_id] })"
     end
   end
 end

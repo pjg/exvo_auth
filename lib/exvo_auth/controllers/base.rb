@@ -37,15 +37,15 @@ module ExvoAuth::Controllers::Base
   end
 
   def authenticate_app_in_scope!(scope)    
-    raise("SSL not configured. Your api needs to be exposed through https protocol.") unless request.ssl? || ExvoAuth::Config.require_ssl == false
+    raise("SSL not configured. Your api needs to be exposed using https protocol.") unless request.ssl? || ExvoAuth::Config.require_ssl == false
 
-    send(basic_authentication_method_name) do |consumer_id, access_token|
+    send(basic_authentication_method_name) do |app_id, access_token|
       current_scopes = ExvoAuth::Autonomous::Provider.new(
-        :consumer_id  => consumer_id,
+        :app_id       => app_id,
         :access_token => access_token
       ).scopes
 
-      @current_consumer_id = consumer_id
+      @current_app_id = app_id
       
       current_scopes.include?(scope.to_s)
     end
@@ -64,8 +64,8 @@ module ExvoAuth::Controllers::Base
     @current_user = session[:user_id] && find_user_by_id(session[:user_id])
   end
   
-  def current_consumer_id
-    @current_consumer_id
+  def current_app_id
+    @current_app_id
   end
 
   def signed_in?
@@ -111,5 +111,4 @@ module ExvoAuth::Controllers::Base
       end
     end
   end
-  
 end
