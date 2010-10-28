@@ -89,7 +89,7 @@ Contact us and provide following details:
 # Consumer side
 
 consumer = ExvoAuth::Autonomous::Consumer.new(
-  :provider_id => "this is client_id of the app you want to connect to"
+  :app_id => "this is client_id of the app you want to connect to"
 )
 consumer.get(*args) - interface is exactly the same like in HTTParty. All http methods are available (post, put, delete, head, options).
 
