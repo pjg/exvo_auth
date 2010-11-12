@@ -1,0 +1,52 @@
+PATH
+  remote: .
+  specs:
+    exvo-auth (0.9.10)
+      httparty (~> 0.6.1)
+      oa-oauth (~> 0.0.4)
+      postageapp (~> 1.0.8)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.2)
+    crack (0.1.8)
+    faraday (0.4.6)
+      addressable (>= 2.1.1)
+      rack (>= 1.0.1)
+    httparty (0.6.1)
+      crack (= 0.1.8)
+    json (1.4.6)
+    mocha (0.9.9)
+      rake
+    multi_json (0.0.5)
+    nokogiri (1.4.3.1)
+    oa-core (0.0.5)
+      rack (~> 1.1)
+    oa-oauth (0.0.5)
+      multi_json (~> 0.0.2)
+      nokogiri (~> 1.4.2)
+      oa-core (= 0.0.5)
+      oauth (~> 0.4.0)
+      oauth2 (~> 0.0.10)
+    oauth (0.4.4)
+    oauth2 (0.0.13)
+      faraday (~> 0.4.1)
+      multi_json (>= 0.0.4)
+    postageapp (1.0.8)
+      json (>= 1.4.6)
+    rack (1.2.1)
+    rake (0.8.7)
+    test-unit (2.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.0.0)
+  exvo-auth!
+  httparty (~> 0.6.1)
+  mocha (~> 0.9.8)
+  oa-oauth (~> 0.0.4)
+  postageapp (~> 1.0.8)
+  test-unit (~> 2.1.0)

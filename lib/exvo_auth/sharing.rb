@@ -1,3 +1,9 @@
+# TODO in CFS:
+# expose needed urls in file reponse
+#
+# TODO in Auth:
+# create api for finding users by uid/email
+
 class ExvoAuth::Sharing
   def self.create(attrs = {})
     new(attrs).save!
@@ -56,7 +62,7 @@ class ExvoAuth::Sharing
   end
   
   def quick_download_url
-    file["quick_download_url"] # http://cfs.exvo.com/files/#{id}/#{token}
+    file["quick_download_url"]
   end
   
   def see_in_shared_items_url
@@ -64,7 +70,7 @@ class ExvoAuth::Sharing
   end
   
   # Upon creating a sharing in cfs, user will be redirected to "return_to" url with one additional param: "sharing_id".
-  # The app is then responsible to create a corresponding sharing locally.
+  # The app is then responsible for creating a corresponding sharing locally if needed.
   def save_to_shared_items_url
     append_url(file["create_sharing_url"], :return_to => attrs[:shared_items_url])
   end
