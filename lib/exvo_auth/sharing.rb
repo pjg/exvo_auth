@@ -1,6 +1,3 @@
-# TODO in CFS:
-# expose needed urls in file reponse
-#
 # TODO in Auth:
 # create api for finding users by uid/email
 
@@ -20,6 +17,12 @@ class ExvoAuth::Sharing
   end
 
   def save!
+    cfs.post("/sharings", :query => attrs)
+  end
+  
+  # TODO: move following logic to cfs.
+  
+  def send_email
     user_exists? ? send_email_to_existing_user : send_email_to_potential_user
   end
   
@@ -29,18 +32,22 @@ class ExvoAuth::Sharing
   end
 
   def send_email_to_existing_user
+    cfs.post("...") # shared_items_url, email_or_uid. cfs creates sharing, sends email.
+       
     quick_download_url
     see_in_shared_items_url
     # send
   end
   
   def send_email_to_potential_user
+    cfs.post("...") # shared_items_url, email_or_uid. cfs doesn't create sharing (the second link will when clicked).
+    
     quick_download_url
     save_to_shared_items_url
     # send
   end
   
-  private
+  private  
   
   # Creates sharing in cfs and returns it.
   def sharing

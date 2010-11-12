@@ -4,7 +4,6 @@ PATH
     exvo-auth (0.9.10)
       httparty (~> 0.6.1)
       oa-oauth (~> 0.0.4)
-      postageapp (~> 1.0.8)
 
 GEM
   remote: http://rubygems.org/
@@ -16,7 +15,6 @@ GEM
       rack (>= 1.0.1)
     httparty (0.6.1)
       crack (= 0.1.8)
-    json (1.4.6)
     mocha (0.9.9)
       rake
     multi_json (0.0.5)
@@ -33,8 +31,6 @@ GEM
     oauth2 (0.0.13)
       faraday (~> 0.4.1)
       multi_json (>= 0.0.4)
-    postageapp (1.0.8)
-      json (>= 1.4.6)
     rack (1.2.1)
     rake (0.8.7)
     test-unit (2.1.1)
@@ -48,5 +44,4 @@ DEPENDENCIES
   httparty (~> 0.6.1)
   mocha (~> 0.9.8)
   oa-oauth (~> 0.0.4)
-  postageapp (~> 1.0.8)
   test-unit (~> 2.1.0)
