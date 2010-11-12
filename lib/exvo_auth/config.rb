@@ -49,4 +49,8 @@ module ExvoAuth::Config
   def self.require_ssl=(require_ssl)
     @@require_ssl = require_ssl
   end
+  
+  def self.cfs_id
+    "fb0e7bd5864aa0186630212d800af8a6"
+  end
 end
