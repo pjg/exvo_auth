@@ -5,7 +5,7 @@ class ExvoAuth::Models::Message
   class RecordInvalid < StandardError; end
   class RecordNotFound < StandardError; end
   
-  validates :label,    :presence => true, :format => /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*/ix
+  validates :label,    :presence => true, :format => /^[_a-z0-9]+$/ix
   validates :text,     :presence => true
   validates :user_uid, :presence => true, :numericality => true
 
