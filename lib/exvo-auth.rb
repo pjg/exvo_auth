@@ -23,6 +23,10 @@ module ExvoAuth
     autoload :Merb,  'exvo_auth/controllers/merb'
   end
   
+  module Models
+    autoload :Message, 'exvo_auth/models/message'
+  end
+  
   module Autonomous
     autoload :Base,     'exvo_auth/autonomous/base'
     autoload :Consumer, 'exvo_auth/autonomous/consumer'
