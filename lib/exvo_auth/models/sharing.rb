@@ -1,5 +1,5 @@
 # TODO: activemodel with validations
-class ExvoAuth::Sharing
+class ExvoAuth::Models::Sharing
   def self.create(attrs = {})
     new(attrs).save
   end

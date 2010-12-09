@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
   
   s.add_dependency "oa-oauth",    "~> 0.0.4"
   s.add_dependency "httparty",    "~> 0.6.1"
-  s.add_dependency "activemodel", "> 3.0.0"
+  s.add_dependency "activemodel", "~> 3.0.0"
+  s.add_dependency "actionpack",  "~> 3.0.0"
 
   s.add_development_dependency "mocha",     "~> 0.9.8"
   s.add_development_dependency "test-unit", "~> 2.1.0"
