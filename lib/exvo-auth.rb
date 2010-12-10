@@ -6,10 +6,11 @@ require 'uri'
 require 'base64'
 
 module ExvoAuth
-  autoload :Middleware, 'exvo_auth/middleware'
-  autoload :Config,     'exvo_auth/config'
-  autoload :Dejavu,     'exvo_auth/dejavu'
-  autoload :VERSION,    'exvo_auth/version'
+  autoload :Middleware,   'exvo_auth/middleware'
+  autoload :SessionStore, 'exvo_auth/session_store'
+  autoload :Config,       'exvo_auth/config'
+  autoload :Dejavu,       'exvo_auth/dejavu'
+  autoload :VERSION,      'exvo_auth/version'
   
   module Strategies
     autoload :Base,           'exvo_auth/strategies/base'
