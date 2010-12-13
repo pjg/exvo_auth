@@ -21,6 +21,8 @@ module ExvoAuth::Controllers::Base
 
     url = if params[:state] == "popup"
       ExvoAuth::Config.host + "/close_popup.html"
+    elsif params[:state] # if not popup then an url
+      params[:state]
     else
       request_replay_url || "/"
     end
