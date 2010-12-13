@@ -25,12 +25,12 @@ class ExvoAuth::SessionStore
     end
     Merb::Controller.class_eval do
       def session; request.session end
-      def cookies; request.cookies end
+      def cookies; request.env["action_dispatch.cookies"] ||= ActionDispatch::Cookies::CookieJar.build(request) end
     end
     Merb::Request.class_eval do
       def session?; true end
-      def session; env["rack.session"]            ||= {} end
-      def cookies; env["action_dispatch.cookies"] ||= {} end
+      def session; Rack::Request.new(env).session end
+      def cookies; Rack::Request.new(env).cookies end
     end
   end
 end
