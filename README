@@ -104,6 +104,8 @@ If scopes are empty, then provider app should not present any resources to consu
 
 before_filter {|c| c.authenticate_app_in_scope!("payments") }
 
+In provider controller which is just a fancy name for API controller you can use #current_app_id method to get the app_id of the app connecting.
+
 
 Dejavu - replay non-GET requests after authentication redirects
 ===============================================================
