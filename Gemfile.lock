@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    exvo-auth (0.10.3)
+    exvo-auth (0.11.0)
       actionpack (~> 3.0.0)
       activemodel (~> 3.0.0)
       httparty (~> 0.6.1)

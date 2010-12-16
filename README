@@ -44,13 +44,7 @@ Sample implementation (Rails):
 
 class SessionsController < ApplicationController
   def create
-    auth = params[:auth] # sometimes you will need to do this: request.env["rack.request.query_hash"]["auth"]
-    user = User.find_or_create_by_uid(auth["uid"])
-    
-    user_info = auth["user_info"]
-    user.update_attributes!(user_info)
-    
-    sign_in_and_redirect!(user.id)
+    sign_in_and_redirect!
   end
   
   def destroy
@@ -61,11 +55,19 @@ class SessionsController < ApplicationController
     render :text => "Sorry!"
   end
 end
+
+
+6. Implement #find_or_create_user_by_uid(uid) in your Application Controller.
+
+This method will be called by #current_user. Previously we did this in sessions_controller but since the sharing sessions changes this controller
+will not be used in most cases because the session comes from another app through a shared cookie. This method should find user by uid or create it. 
+Additional info (emails, etc) can be obtained using auth api (/users/uid.json path).
+
   
 In short: you get params[:auth]. Do what you want to do with it: store the data, create session, etc.
 
 
-6. Sign up and sign in paths for use in links.
+7. Sign up and sign in paths for use in links.
 
 sign in path:                       "/auth/interactive"
 sign up path:                       "/auth/interactive?x_sign_up=true" # this is OAuth2 custom param
@@ -74,7 +76,7 @@ sign in path with a return address: "/auth/interactive?state=url"      # using O
 You have a handy methods available in controllers (and views in Rails): sign_in_path and sign_up_path.
 
 
-7. Read the source, there are few features not mentioned in this README.
+8. Read the source, there are few features not mentioned in this README.
 
 
 Inter-Application Communication

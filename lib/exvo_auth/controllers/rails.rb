@@ -15,9 +15,5 @@ module ExvoAuth::Controllers::Rails
     def basic_authentication_method_name
       :authenticate_or_request_with_http_basic
     end    
-
-    def find_user_by_id(id)
-      User.find(id)
-    end
   end
 end

@@ -16,8 +16,8 @@ module ExvoAuth::Controllers::Base
   end
 
   # Usually this method is called from your sessions#create.
-  def sign_in_and_redirect!(user_id)
-    session[:user_id] = user_id
+  def sign_in_and_redirect!
+    session[:user_id] = request.env["rack.request.query_hash"]["auth"]["uid"]
 
     url = if params[:state] == "popup"
       ExvoAuth::Config.host + "/close_popup.html"
@@ -63,7 +63,7 @@ module ExvoAuth::Controllers::Base
   
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = session[:user_id] && find_user_by_id(session[:user_id])
+    @current_user = session[:user_id] && find_or_create_user_by_uid(session[:user_id])
   end
   
   def current_app_id
@@ -73,8 +73,12 @@ module ExvoAuth::Controllers::Base
   def signed_in?
     !!current_user
   end
-
+  
   protected
+  
+  def find_or_create_user_by_uid(uid)
+    raise "Implement this method in a controller"
+  end
 
   def sign_out_url(return_to)
     ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
