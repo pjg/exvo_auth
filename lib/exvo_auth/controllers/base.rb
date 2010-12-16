@@ -17,7 +17,7 @@ module ExvoAuth::Controllers::Base
 
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!
-    session[:user_id] = request.env["rack.request.query_hash"]["auth"]["uid"]
+    session[:user_uid] = request.env["rack.request.query_hash"]["auth"]["uid"]
 
     url = if params[:state] == "popup"
       ExvoAuth::Config.host + "/close_popup.html"
@@ -33,7 +33,7 @@ module ExvoAuth::Controllers::Base
   # Redirect to sign_out_url, signs out and redirects back to "/" (by default).
   # Usuallly this method is called from your sessions#destroy.
   def sign_out_and_redirect!(return_to = "/")
-    session.delete(:user_id)
+    session.delete(:user_uid)
     @current_user = nil
     redirect_to sign_out_url(return_to)
   end
@@ -63,7 +63,7 @@ module ExvoAuth::Controllers::Base
   
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = session[:user_id] && find_or_create_user_by_uid(session[:user_id])
+    @current_user = session[:user_uid] && find_or_create_user_by_uid(session[:user_uid])
   end
   
   def current_app_id
