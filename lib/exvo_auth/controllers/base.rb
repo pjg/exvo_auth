@@ -10,7 +10,7 @@ module ExvoAuth::Controllers::Base
       if callback_value
         redirect_to non_interactive_sign_in_path(callback_key => callback_value)
       else
-        redirect_to sign_in_path
+        redirect_to sign_up_path # for the first few weekes. after that, change back to: sign_in_path
       end
     end
   end
