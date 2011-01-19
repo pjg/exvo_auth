@@ -33,7 +33,7 @@ module ExvoAuth::Controllers::Base
   # Redirect to sign_out_url, signs out and redirects back to "/" (by default).
   # Usuallly this method is called from your sessions#destroy.
   def sign_out_and_redirect!(return_to = "/")
-    session.delete(:user_uid)
+    session.clear
     @current_user = nil
     redirect_to sign_out_url(return_to)
   end
@@ -77,7 +77,7 @@ module ExvoAuth::Controllers::Base
   protected
   
   def find_or_create_user_by_uid(uid)
-    raise "Implement this method in a controller"
+    raise "Implement find_or_create_user_by_uid in a controller"
   end
 
   def sign_out_url(return_to)

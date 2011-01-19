@@ -7,7 +7,7 @@ class ExvoAuth::SessionStore
     raise "Please configure :secret_token" unless @secret_token = options[:secret_token]
     raise "Please configure :domain"       unless @domain       = options[:domain]
     
-    @app = ActionDispatch::Cookies.new(ActionDispatch::Session::CookieStore.new(ActionDispatch::Flash.new(app), :key => "_exvo_session", :domain => @domain))
+    @app = ActionDispatch::Cookies.new(ActionDispatch::Session::CookieStore.new(ActionDispatch::Flash.new(app), :key => "_exvo_session", :domain => @domain, :expire_after => 2.weeks))
   end
   def call(env)
     @app.call(env.reverse_merge!(env_defaults))
