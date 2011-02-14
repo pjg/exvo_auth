@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "exvo-auth"
-  
+
   s.add_dependency "oa-oauth",    "~> 0.0.4"
   s.add_dependency "httparty",    "~> 0.6.1"
   s.add_dependency "activemodel", "~> 3.0.0"

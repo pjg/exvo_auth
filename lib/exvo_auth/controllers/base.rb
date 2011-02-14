@@ -38,7 +38,7 @@ module ExvoAuth::Controllers::Base
     redirect_to sign_out_url(return_to)
   end
 
-  def authenticate_app_in_scope!(scope)    
+  def authenticate_app_in_scope!(scope)
     raise("SSL not configured. Your api needs to be exposed using https protocol.") unless request.ssl? || ExvoAuth::Config.require_ssl == false
 
     send(basic_authentication_method_name) do |app_id, access_token|
@@ -48,24 +48,24 @@ module ExvoAuth::Controllers::Base
       ).scopes
 
       @current_app_id = app_id
-      
+
       current_scopes.include?(scope.to_s)
     end
   end
-  
+
   def sign_in_path
     "/auth/interactive"
   end
-  
+
   def sign_up_path
     "/auth/interactive?x_sign_up=true"
   end
-  
+
   def current_user
     return @current_user if defined?(@current_user)
     @current_user = session[:user_uid] && find_or_create_user_by_uid(session[:user_uid])
   end
-  
+
   def current_app_id
     @current_app_id
   end
@@ -73,9 +73,9 @@ module ExvoAuth::Controllers::Base
   def signed_in?
     !!current_user
   end
-  
+
   protected
-  
+
   def find_or_create_user_by_uid(uid)
     raise "Implement find_or_create_user_by_uid in a controller"
   end
@@ -91,7 +91,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def current_request
-    request.params.reject{ |k, v| ["controller", "action"].include?(k) }.merge(
+    request.params.reject{ |k, v| ["controller", "action"].include?(k) || v.nil? }.merge(
       :_dejavu => {
         :script_name  => request.script_name, # for Rack::Request
         :path_info    => request.path_info,   # for Rack::Request
@@ -105,7 +105,7 @@ module ExvoAuth::Controllers::Base
   def store_request!
     session[:stored_request] = Base64.encode64(MultiJson.encode(current_request))
   end
-  
+
   def request_replay_url
     if stored_request = session.delete(:stored_request)
       params = MultiJson.decode(Base64.decode64(stored_request))
