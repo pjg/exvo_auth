@@ -8,7 +8,7 @@ module ExvoAuth::Config
     @@debug = debug
   end
 
-  def self.host 
+  def self.host
     @@host ||= case(env)
                when 'production'
                  'auth.exvo.com'
@@ -19,9 +19,9 @@ module ExvoAuth::Config
                end
     @@host
   end
-  
-  def self.host=(host) 
-    @@host = host 
+
+  def self.host=(host)
+    @@host = host
   end
 
   def self.uri
@@ -32,31 +32,31 @@ module ExvoAuth::Config
       require_ssl ? "https://#{host}" : "http://#{host}"
     end
   end
-  
+
   def self.callback_key
     @@callback_key ||= '_callback'
   end
-  
+
   def self.callback_key=(callback_key)
-    @@callback_key = callback_key 
+    @@callback_key = callback_key
   end
-  
+
   def self.client_id
-    @@client_id ||= nil
+    @@client_id ||= ENV['AUTH_CLIENT_ID']
   end
-  
+
   def self.client_id=(client_id)
     @@client_id = client_id
   end
-  
+
   def self.client_secret
-    @@client_secret ||= nil 
+    @@client_secret ||= ENV['AUTH_CLIENT_SECRET']
   end
 
   def self.client_secret=(client_secret)
     @@client_secret = client_secret
   end
-  
+
   def self.require_ssl
     @@require_ssl ||= case(env)
                       when 'production'
@@ -70,13 +70,13 @@ module ExvoAuth::Config
   def self.require_ssl=(require_ssl)
     @@require_ssl = require_ssl
   end
-  
-  def self.cfs_id
-    "fb0e7bd5864aa0186630212d800af8a6"
-  end
 
   def self.env
     @@env ||= (defined?(Rails) ? Rails : Merb).env
     @@env
+  end
+
+  def self.cfs_id
+    "fb0e7bd5864aa0186630212d800af8a6"
   end
 end
