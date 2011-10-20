@@ -1,6 +1,7 @@
 module ExvoAuth::Config
   def self.debug
-    @@debug = false unless defined?(@@debug)
+    @@debug ||= ENV['AUTH_DEBUG']
+    @@debug ||= false
     @@debug
   end
 
@@ -9,6 +10,7 @@ module ExvoAuth::Config
   end
 
   def self.host
+    @@host ||= ENV['AUTH_HOST']
     @@host ||= case(env)
                when 'production'
                  'auth.exvo.com'
@@ -58,6 +60,7 @@ module ExvoAuth::Config
   end
 
   def self.require_ssl
+    @@require_ssl ||= ENV['AUTH_REQUIRE_SSL']
     @@require_ssl ||= case(env)
                       when 'production'
                         true

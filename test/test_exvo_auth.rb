@@ -57,4 +57,13 @@ class TestExvoAuth < Test::Unit::TestCase
     ExvoAuth::Config.expects(:env).returns('development')
     assert_false ExvoAuth::Config.require_ssl
   end
+
+  test "ENV setting overrides default auth host setting" do
+    ExvoAuth::Config.host = nil # invalidate memoization
+    host = 'test.exvo.com'
+    ENV['AUTH_HOST'] = host
+    ExvoAuth::Config.expects(:env).at_least(0)
+    assert_equal host, ExvoAuth::Config.host
+    ENV['AUTH_HOST'] = nil
+  end
 end
