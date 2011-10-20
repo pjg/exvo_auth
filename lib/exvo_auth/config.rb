@@ -9,11 +9,28 @@ module ExvoAuth::Config
   end
 
   def self.host 
-    @@host ||= 'https://auth.exvo.com' 
+    @@host ||= case(env)
+               when 'production'
+                 'auth.exvo.com'
+               when 'staging'
+                 'staging.auth.exvo.com'
+               else
+                 'auth.exvo.local'
+               end
+    @@host
   end
   
   def self.host=(host) 
     @@host = host 
+  end
+
+  def self.uri
+    if host =~ /^http(s)*/
+      # Legacy compatibility, when `host` was incorrectly used as `uri`
+      host
+    else
+      require_ssl ? "https://#{host}" : "http://#{host}"
+    end
   end
   
   def self.callback_key
@@ -52,5 +69,10 @@ module ExvoAuth::Config
   
   def self.cfs_id
     "fb0e7bd5864aa0186630212d800af8a6"
+  end
+
+  def self.env
+    @@env ||= (defined?(Rails) ? Rails : Merb).env
+    @@env
   end
 end

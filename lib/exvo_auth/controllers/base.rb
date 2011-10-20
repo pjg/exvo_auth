@@ -20,7 +20,7 @@ module ExvoAuth::Controllers::Base
     session[:user_uid] = request.env["rack.request.query_hash"]["auth"]["uid"]
 
     url = if params[:state] == "popup"
-      ExvoAuth::Config.host + "/close_popup.html"
+      ExvoAuth::Config.uri + "/close_popup.html"
     elsif params[:state] # if not popup then an url
       params[:state]
     else
@@ -81,7 +81,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def sign_out_url(return_to)
-    ExvoAuth::Config.host + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
+    ExvoAuth::Config.uri + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
   end
 
   def non_interactive_sign_in_path(params = {})

@@ -1,11 +1,11 @@
 class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
   def initialize(app, name, options = {})
-    options[:site]          ||= ExvoAuth::Config.host
+    options[:site]          ||= ExvoAuth::Config.uri
     options[:client_id]     ||= ExvoAuth::Config.client_id
     options[:client_secret] ||= ExvoAuth::Config.client_secret
     
     if options[:site].nil? || options[:client_id].nil? || options[:client_secret].nil?
-      raise(ArgumentError, "Please configure host, client_id and client_secret")
+      raise(ArgumentError, "Please configure uri, client_id and client_secret")
     end
     
     super(app, name, options.delete(:client_id), options.delete(:client_secret), options)

@@ -2,7 +2,7 @@ require 'helper'
 
 class TestIntegration < Test::Unit::TestCase
   def setup
-    ExvoAuth::Config.host          = "https://staging.auth.exvo.com"
+    ExvoAuth::Config.host          = "staging.auth.exvo.com"
     ExvoAuth::Config.client_id     = "foo"
     ExvoAuth::Config.client_secret = "bar"
     ExvoAuth::Config.debug         = true

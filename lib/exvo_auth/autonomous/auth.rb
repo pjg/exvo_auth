@@ -3,7 +3,7 @@ class ExvoAuth::Autonomous::Auth
   include ExvoAuth::Autonomous::Http
   
   def base_uri
-    ExvoAuth::Config.host
+    ExvoAuth::Config.uri
   end
   
   def username
