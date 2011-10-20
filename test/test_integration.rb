@@ -6,6 +6,7 @@ class TestIntegration < Test::Unit::TestCase
     ExvoAuth::Config.client_id     = "foo"
     ExvoAuth::Config.client_secret = "bar"
     ExvoAuth::Config.debug         = true
+    ExvoAuth::Config.require_ssl   = true
   end
   
   test "integration with staging.auth.exvo.com" do

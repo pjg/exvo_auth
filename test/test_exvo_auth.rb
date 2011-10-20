@@ -51,4 +51,10 @@ class TestExvoAuth < Test::Unit::TestCase
     ExvoAuth::Config.expects(:env).returns('development')
     assert_equal ExvoAuth::Config.host, 'auth.exvo.local'
   end
+
+  test "ssl not being required by default in development environment" do
+    ExvoAuth::Config.require_ssl = nil # invalidate memoization
+    ExvoAuth::Config.expects(:env).returns('development')
+    assert_false ExvoAuth::Config.require_ssl
+  end
 end

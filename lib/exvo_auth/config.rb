@@ -58,11 +58,15 @@ module ExvoAuth::Config
   end
   
   def self.require_ssl
-    @@require_ssl = true unless defined?(@@require_ssl)
+    @@require_ssl ||= case(env)
+                      when 'production'
+                        true
+                      else
+                        false
+                      end
     @@require_ssl
   end
 
-  # Set this to false during development ONLY!
   def self.require_ssl=(require_ssl)
     @@require_ssl = require_ssl
   end
