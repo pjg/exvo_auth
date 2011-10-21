@@ -1,8 +1,6 @@
 module ExvoAuth::Config
   def self.debug
-    @@debug ||= ENV['AUTH_DEBUG']
-    @@debug ||= false
-    @@debug
+    @@debug ||= ENV['AUTH_DEBUG'] || false
   end
 
   def self.debug=(debug)
@@ -10,16 +8,7 @@ module ExvoAuth::Config
   end
 
   def self.host
-    @@host ||= ENV['AUTH_HOST']
-    @@host ||= case(env)
-               when 'production'
-                 'auth.exvo.com'
-               when 'staging'
-                 'staging.auth.exvo.com'
-               else
-                 'auth.exvo.local'
-               end
-    @@host
+    @@host ||= ENV['AUTH_HOST'] || default_opts[env.to_sym][:host]
   end
 
   def self.host=(host)
@@ -60,14 +49,7 @@ module ExvoAuth::Config
   end
 
   def self.require_ssl
-    @@require_ssl ||= ENV['AUTH_REQUIRE_SSL']
-    @@require_ssl ||= case(env)
-                      when 'production'
-                        true
-                      else
-                        false
-                      end
-    @@require_ssl
+    @@require_ssl ||= ENV['AUTH_REQUIRE_SSL'] || default_opts[env.to_sym][:require_ssl]
   end
 
   def self.require_ssl=(require_ssl)
@@ -75,7 +57,8 @@ module ExvoAuth::Config
   end
 
   def self.env
-    @@env ||= (defined?(Rails) ? Rails : Merb).env
+    @@env ||= Rails.env if defined?(Rails)
+    @@env ||= Merb.env if defined?(Merb)
     @@env
   end
 
@@ -85,5 +68,24 @@ module ExvoAuth::Config
 
   def self.cfs_id
     "fb0e7bd5864aa0186630212d800af8a6"
+  end
+
+  private
+
+  def self.default_opts
+    {
+      :production => {
+        :host => 'auth.exvo.com',
+        :require_ssl => true
+      },
+      :staging => {
+        :host => 'staging.auth.exvo.com',
+        :require_ssl => false
+      },
+      :development => {
+        :host => 'auth.exvo.local',
+        :require_ssl => false
+      }
+    }
   end
 end
