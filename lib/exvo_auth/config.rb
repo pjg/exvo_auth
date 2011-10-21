@@ -79,6 +79,10 @@ module ExvoAuth::Config
     @@env
   end
 
+  def self.env=(env)
+    @@env = env
+  end
+
   def self.cfs_id
     "fb0e7bd5864aa0186630212d800af8a6"
   end
