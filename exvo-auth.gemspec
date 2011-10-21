@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
   s.add_dependency "activemodel", "~> 3.0.0"
   s.add_dependency "actionpack",  "~> 3.0.0"
 
-  s.add_development_dependency "mocha",     "~> 0.9.8"
-  s.add_development_dependency "test-unit", "~> 2.1.0"
-  s.add_development_dependency "bundler",   "~> 1.0.0"
+  s.add_development_dependency "mocha"
+  s.add_development_dependency "test-unit"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
 
   s.files        = `git ls-files`.split("\n")
