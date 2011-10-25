@@ -85,6 +85,10 @@ module ExvoAuth::Config
       :development => {
         :host => 'auth.exvo.local',
         :require_ssl => false
+      },
+      :test => {
+        :host => 'auth.exvo.local',
+        :require_ssl => false
       }
     }
   end
