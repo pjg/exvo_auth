@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Jacek Becela"]
   s.email       = ["jacek.becela@gmail.com"]
-  s.homepage    = "http://rubygems.org/gems/exvo-auth"
+  s.homepage    = "https://github.com/Exvo/Auth"
   s.summary     = "Sign in with Exvo account"
   s.description = "Sign in with Exvo account"
 
