@@ -3,12 +3,12 @@ class ExvoAuth::Strategies::NonInteractive < ExvoAuth::Strategies::Base
     super(app, :non_interactive, options)
   end
   
-  def request_phase(options = {})
-    redirect @client.non_interactive.authorize_url(unicorns_and_rainbows(
-      :redirect_uri => callback_url, 
-      :scope        => request["scope"], 
-      :state        => request["state"]
-    ))
+  def request_phase
+    options[:redirect_uri] = callback_url if callback_url
+    options[:scope] = request["scope"] if request["scope"]
+    options[:state] = request["state"] if request["state"]
+
+    redirect @client.non_interactive.authorize_url(options)
   end
   
   def callback_url

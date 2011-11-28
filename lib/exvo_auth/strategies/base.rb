@@ -30,11 +30,4 @@ class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
       'extra'     => { 'user_hash' => user_data }
     })
   end
-  
-  protected
-  
-  # Have a better name? Let me know!
-  def unicorns_and_rainbows(hash)
-    hash.reject{|k, v| v.nil?}
-  end
 end
