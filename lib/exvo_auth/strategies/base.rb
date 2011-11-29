@@ -3,7 +3,8 @@ class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
     options[:site]          ||= ExvoAuth::Config.uri
     options[:client_id]     ||= ExvoAuth::Config.client_id
     options[:client_secret] ||= ExvoAuth::Config.client_secret
-    
+    options[:token_url]     ||= "/oauth/access_token"
+
     if options[:site].nil? || options[:client_id].nil? || options[:client_secret].nil?
       raise(ArgumentError, "Please configure uri, client_id and client_secret")
     end
