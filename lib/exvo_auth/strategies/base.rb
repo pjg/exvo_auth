@@ -13,6 +13,7 @@ class ExvoAuth::Strategies::Base < OmniAuth::Strategies::OAuth2
   end
   
   def user_data
+    @access_token.options.merge!({:param_name => :access_token, :mode => :query})
     @data ||= MultiJson.decode(@access_token.get('/user.json'))
   end
 
