@@ -78,6 +78,50 @@ class SessionsController < ApplicationController
 end
 ```
 
+It's good to have your SessionsController#create action a little more extended, so that each time the user logs in into the app, his user data (like email, nickname) is updated from auth (his profile):
+
+```ruby
+def create
+  auth = request.env["omniauth.auth"]
+
+  if user = User.find_by_uid(auth["uid"])
+    user.update_attributes!(auth["user_info"])
+  else
+    user = User.create(:uid => auth["uid"], :nickname => auth["user_info"]["nickname"], :email => auth["user_info"]["email"])
+  end
+
+  sign_in_and_redirect!
+end
+```
+
+This is what you get (and what you can use/save for the local user) from auth (example data as of 2011-12):
+
+```ruby
+request.env["omniauth.auth"].inspect
+
+  { "provider" => "exvo",
+    "uid" => 1,
+    "credentials" => {
+      "token" => "a2d09701559b9f26a8284d6f94670477d882ad6d9f3d92ce9917262a6b54085fa3fb99e111340459"
+    },
+    "user_info" => {
+      "nickname" => "Pawel",
+      "email" => "pawel@exvo.com"
+    },
+    "extra" => {
+      "user_hash" => {
+        "id" => 1,
+        "nickname" => "Pawel",
+        "country_code" => nil,
+        "plan" => "admin",
+        "language" => "en",
+        "email" => "pawel@exvo.com",
+        "referring_user_id" => nil
+      }
+    }
+  }
+```
+
 
 ## Implement `#find_or_create_user_by_uid(uid)` in your Application Controller
 
@@ -91,9 +135,7 @@ def find_or_create_user_by_uid(uid)
 end
 ```
 
-Additional info (emails, etc) can be obtained using auth api (`/users/uid.json` path).
-
-In short: you get `params[:auth]`. Do what you want to do with it: store the data, create session, etc.
+It's best to leave this method as it is (without updating any user data inside this method, better to do this in the SessionsController#create action). Updating user in this method might lead to some very hard to debug cyclic executions possibly leading to stack-level too deep errors and/or general slowness, so please proceed with extreme caution.
 
 
 ## Sign up and sign in paths for use in links
@@ -105,6 +147,19 @@ sign in path with a return address: "/auth/interactive?state=url"      # using O
 ```
 
 You have a handy methods available in controllers (and views in Rails): `sign_in_path` and `sign_up_path`.
+
+
+## Require authentication in your controllers
+
+In `application_controller` (for all controllers) or in some controller just add:
+
+```ruby
+before_filter :authenticate_user!
+```
+
+## Fetching user information
+
+All info about any particular user ca be obtained using auth api (`/users/uid.json` path).
 
 
 ## Read the source, there are few features not mentioned in this README
