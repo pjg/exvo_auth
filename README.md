@@ -1,4 +1,17 @@
-# OAuth2
+# exvo-auth
+
+This gem is Exvo's implementation of the oauth2 protocole for handling user authentication across Exvo apps.
+
+
+
+## Requirements
+
+* Runs on Ruby 1.8.7 & 1.9.2 (preferred version)
+* Rails 3.0+ (works with Rails 3.1) or Merb
+
+
+
+## OAuth2
 
 * Get familiar with [OmniAuth by Intridea](http://github.com/intridea/omniauth). Read about OAuth2.
 * Obtain `client_id` and `client_secret` for your app from Exvo.
