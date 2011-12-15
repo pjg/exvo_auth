@@ -26,8 +26,8 @@ The preferred way to configure the gem is via the ENV variables:
 ```ruby
 ENV['AUTH_CLIENT_ID']     = "foo"
 ENV['AUTH_CLIENT_SECRET'] = "bar"
-ENV['AUTH_DEBUG']         = true            # [OPTIONAL] dumps all HTTP traffic to STDERR, useful during development
-ENV['AUTH_REQUIRE_SSL']   = false           # [OPTIONAL] disable SSL, useful in development (note that all apps API urls must be http, not https)
+ENV['AUTH_DEBUG']         = "true"          # [OPTIONAL] dumps all HTTP traffic to STDERR, useful during development; it *has to be a string, not a boolean*
+ENV['AUTH_REQUIRE_SSL']   = "false"         # [OPTIONAL] disable SSL, useful in development (note that all apps API urls must be http, not https); it *has to be a string, not a boolean*
 ENV['AUTH_HOST']          = "test.exvo.com" # [OPTIONAL] override the default auth host
 ```
 
@@ -42,8 +42,8 @@ But you can also set things directly in the `config/application.rb` file (before
 ```ruby
 ExvoAuth::Config.client_id     = "foo"
 ExvoAuth::Config.client_secret = "bar"
-ExvoAuth::Config.debug         = true
-ExvoAuth::Config.require_ssl   = false
+ExvoAuth::Config.debug         = true            # boolean
+ExvoAuth::Config.require_ssl   = false           # boolean
 ExvoAuth::Config.host          = "test.exvo.com"
 ```
 

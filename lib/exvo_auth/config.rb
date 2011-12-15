@@ -1,6 +1,6 @@
 module ExvoAuth::Config
   def self.debug
-    @@debug ||= ENV['AUTH_DEBUG'] || false
+    @@debug ||= (ENV['AUTH_DEBUG'] == 'true') || false
   end
 
   def self.debug=(debug)
@@ -49,7 +49,7 @@ module ExvoAuth::Config
   end
 
   def self.require_ssl
-    @@require_ssl ||= ENV['AUTH_REQUIRE_SSL'] || default_opts[env.to_sym][:require_ssl]
+    @@require_ssl ||= (ENV['AUTH_REQUIRE_SSL'] == 'true') || default_opts[env.to_sym][:require_ssl]
   end
 
   def self.require_ssl=(require_ssl)

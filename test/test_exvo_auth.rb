@@ -66,4 +66,10 @@ class TestExvoAuth < Test::Unit::TestCase
     assert_equal host, ExvoAuth::Config.host
     ENV['AUTH_HOST'] = nil
   end
+
+  test "setting debugging using ENV key (boolean converted to string)" do
+    assert_equal false, ExvoAuth::Config.debug
+    ENV['AUTH_DEBUG'] = 'true'
+    assert_equal true, ExvoAuth::Config.debug
+  end
 end
