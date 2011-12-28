@@ -10,6 +10,6 @@ class ExvoAuth::Middleware
   private
   
   def middlewares
-    [ExvoAuth::Strategies::Interactive, ExvoAuth::Strategies::NonInteractive, ExvoAuth::Dejavu]
+    [ExvoAuth::Dejavu]
   end
 end

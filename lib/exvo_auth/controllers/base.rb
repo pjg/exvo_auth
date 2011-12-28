@@ -54,11 +54,11 @@ module ExvoAuth::Controllers::Base
   end
 
   def sign_in_path
-    "/auth/interactive"
+    "/auth/exvo"
   end
 
   def sign_up_path
-    "/auth/interactive?x_sign_up=true"
+    "/auth/exvo?x_sign_up=true"
   end
 
   def current_user
@@ -85,7 +85,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def non_interactive_sign_in_path(params = {})
-    path  = "/auth/non_interactive"
+    path  = "/auth/exvo"
     query = Rack::Utils.build_query(params)
     query.empty? ? path : "#{path}?#{query}"
   end
