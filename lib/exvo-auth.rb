@@ -45,5 +45,7 @@ module ExvoAuth
 end
 
 OAuth2::Client.class_eval do
-  def non_interactive; ExvoAuth::OAuth2::Strategy::NonInteractive.new(self) end
+  def non_interactive
+    ExvoAuth::OAuth2::Strategy::NonInteractive.new(self)
+  end
 end
