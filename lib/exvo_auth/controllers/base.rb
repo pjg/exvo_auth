@@ -62,7 +62,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def current_user
-    return @current_user if defined?(@current_user)
+    return @current_user unless @current_user.nil?
     @current_user = session[:user_uid] && find_or_create_user_by_uid(session[:user_uid])
   end
 
