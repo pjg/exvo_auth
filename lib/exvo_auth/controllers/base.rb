@@ -34,7 +34,7 @@ module ExvoAuth::Controllers::Base
   # Usuallly this method is called from your sessions#destroy.
   def sign_out_and_redirect!(return_to = "/")
     session.clear
-    @current_user = nil
+    remove_instance_variable(:@current_user) if instance_variable_defined?(:@current_user)
     redirect_to sign_out_url(return_to)
   end
 
