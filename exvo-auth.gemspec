@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "guard-test"
   s.add_development_dependency "rb-fsevent"
   s.add_development_dependency "rb-inotify"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "simplecov-rcov"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
