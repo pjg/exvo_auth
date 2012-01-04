@@ -1,3 +1,5 @@
+require 'singleton'
+
 class ExvoAuth::Autonomous::Auth
   include Singleton
   include ExvoAuth::Autonomous::Http
