@@ -1,36 +1,33 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path("../lib/exvo_auth/version", __FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require "exvo_auth/version"
 
-Gem::Specification.new do |s|
-  s.name        = "exvo-auth"
-  s.version     = ExvoAuth::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Jacek Becela"]
-  s.email       = ["jacek.becela@gmail.com"]
-  s.homepage    = "https://github.com/Exvo/Auth"
-  s.summary     = "Sign in with Exvo account"
-  s.description = "Sign in with Exvo account"
+Gem::Specification.new do |gem|
+  gem.name        = "exvo-auth"
+  gem.version     = ExvoAuth::VERSION
+  gem.authors     = ["Jacek Becela", "Paweł Gościcki"]
+  gem.email       = ["jacek.becela@gmail.com", "pawel.goscicki@gmail.com"]
+  gem.homepage    = "https://github.com/Exvo/Auth"
+  gem.summary     = "User and App authentication for Exvo"
+  gem.description = "Collection of users and applications authentication methods for use when you want your users or applications authorize using the Exvo platform."
 
-  s.required_rubygems_version = ">= 1.3.6"
-  s.rubyforge_project         = "exvo-auth"
+  gem.files         = `git ls-files`.split("\n")
+  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  gem.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  gem.require_paths = ["lib"]
 
-  s.add_dependency "httparty"
-  s.add_dependency "activemodel", "~> 3.0"
-  s.add_dependency "actionpack",  "~> 3.0"
-  s.add_dependency "exvo_helpers", "~> 0.2"
+  gem.add_dependency "httparty"
+  gem.add_dependency "activemodel", "~> 3.0"
+  gem.add_dependency "actionpack",  "~> 3.0"
+  gem.add_dependency "exvo_helpers", "~> 0.2"
 
-  s.add_development_dependency "mocha"
-  s.add_development_dependency "test-unit"
-  s.add_development_dependency "bundler"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "guard"
-  s.add_development_dependency "guard-test"
-  s.add_development_dependency "rb-fsevent"
-  s.add_development_dependency "rb-inotify"
-  s.add_development_dependency "simplecov"
-  s.add_development_dependency "simplecov-rcov"
-
-  s.files        = `git ls-files`.split("\n")
-  s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
-  s.require_path = 'lib'
+  gem.add_development_dependency "mocha"
+  gem.add_development_dependency "test-unit"
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "guard"
+  gem.add_development_dependency "guard-test"
+  gem.add_development_dependency "rb-fsevent"
+  gem.add_development_dependency "rb-inotify"
+  gem.add_development_dependency "simplecov"
+  gem.add_development_dependency "simplecov-rcov"
 end
