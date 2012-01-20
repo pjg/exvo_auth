@@ -19,7 +19,7 @@ module ExvoAuth::Controllers::Base
     session[:user_uid] = request.env["omniauth.auth"]["uid"]
 
     url = if params[:state] == "popup"
-      ExvoAuth::Config.uri + "/close_popup.html"
+      Exvo::Helpers..auth_uri + "/close_popup.html"
     elsif params[:state] # if not popup then an url
       params[:state]
     else
@@ -38,7 +38,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def authenticate_app_in_scope!(scope)
-    raise("SSL not configured. Your api needs to be exposed using https protocol.") unless request.ssl? || ExvoAuth::Config.require_ssl == false
+    raise("SSL not configured. Your api needs to be exposed using https protocol.") unless request.ssl? || Exvo::Helpers.auth_require_ssl == false
 
     send(basic_authentication_method_name) do |app_id, access_token|
       current_scopes = ExvoAuth::Autonomous::Provider.new(
@@ -84,7 +84,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def sign_out_url(return_to)
-    ExvoAuth::Config.uri + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
+    Exvo::Helpers.auth_uri + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
   end
 
   def non_interactive_sign_in_path(params = {})

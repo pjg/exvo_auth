@@ -2,8 +2,8 @@ require 'helper'
 
 class TestExvoAuth < Test::Unit::TestCase
   def setup
-    ExvoAuth::Config.client_id     = "foo"
-    ExvoAuth::Config.client_secret = "bar"
+    Exvo::Helpers.auth_client_id     = "foo"
+    Exvo::Helpers.auth_client_secret = "bar"
   end
 
   test "consumer sanity" do
@@ -38,38 +38,5 @@ class TestExvoAuth < Test::Unit::TestCase
   test "basement includes httparty" do
     c = ExvoAuth::Autonomous::Consumer.new(:app_id => "baz")
     assert_true c.send(:basement).included_modules.include?(HTTParty)
-  end
-
-  test "host setting based on production environment" do
-    ExvoAuth::Config.host = nil # invalidate memoization
-    ExvoAuth::Config.expects(:env).returns('production')
-    assert_equal ExvoAuth::Config.host, 'auth.exvo.com'
-  end
-
-  test "host setting based on development environment" do
-    ExvoAuth::Config.host = nil # invalidate memoization
-    ExvoAuth::Config.expects(:env).returns('development')
-    assert_equal ExvoAuth::Config.host, 'auth.exvo.local'
-  end
-
-  test "ssl not being required by default in development environment" do
-    ExvoAuth::Config.require_ssl = nil # invalidate memoization
-    ExvoAuth::Config.expects(:env).returns('development')
-    assert_false ExvoAuth::Config.require_ssl
-  end
-
-  test "ENV setting overrides default auth host setting" do
-    ExvoAuth::Config.host = nil # invalidate memoization
-    host = 'test.exvo.com'
-    ENV['AUTH_HOST'] = host
-    ExvoAuth::Config.expects(:env).at_least(0)
-    assert_equal host, ExvoAuth::Config.host
-    ENV['AUTH_HOST'] = nil
-  end
-
-  test "setting debugging using ENV key (boolean converted to string)" do
-    assert_equal false, ExvoAuth::Config.debug
-    ENV['AUTH_DEBUG'] = 'true'
-    assert_equal true, ExvoAuth::Config.debug
   end
 end

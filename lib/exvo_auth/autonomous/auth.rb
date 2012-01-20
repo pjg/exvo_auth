@@ -3,16 +3,16 @@ require 'singleton'
 class ExvoAuth::Autonomous::Auth
   include Singleton
   include ExvoAuth::Autonomous::Http
-  
+
   def base_uri
-    ExvoAuth::Config.uri
+    Exvo::Helpers.auth_uri
   end
-  
+
   def username
-    ExvoAuth::Config.client_id
+    Exvo::Helpers.auth_client_id
   end
-  
+
   def password
-    ExvoAuth::Config.client_secret
+    Exvo::Helpers.auth_client_secret
   end
 end

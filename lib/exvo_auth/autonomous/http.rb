@@ -8,7 +8,7 @@ module ExvoAuth::Autonomous::Http
   end
 
   def put(path, options = {})
-    # This fixes 411 responses from nginx (on heroku) 
+    # This fixes 411 responses from nginx (on heroku)
     # when Content-Length is missing on put requests.
     options[:body] ||= ""
     http.put(path, options)
@@ -25,19 +25,19 @@ module ExvoAuth::Autonomous::Http
   def options(*args)
     http.options(*args)
   end
-  
+
   protected
-  
+
   def http
     basement.base_uri(base_uri)
     basement.basic_auth(username, password)
     basement
   end
-  
+
   def basement
     @basement ||= Class.new do
       include HTTParty
-      debug_output if ExvoAuth::Config.debug
+      debug_output if Exvo::Helpers.auth_debug
     end
   end
 end
