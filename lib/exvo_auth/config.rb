@@ -24,14 +24,6 @@ module ExvoAuth::Config
     end
   end
 
-  def self.callback_key
-    @@callback_key ||= '_callback'
-  end
-
-  def self.callback_key=(callback_key)
-    @@callback_key = callback_key
-  end
-
   def self.client_id
     @@client_id ||= ENV['AUTH_CLIENT_ID']
   end

@@ -4,7 +4,6 @@ module ExvoAuth::Controllers::Base
     if !signed_in?
       store_request!
 
-      callback_key   = ExvoAuth::Config.callback_key
       callback_value = params[callback_key]
 
       if callback_value
@@ -59,6 +58,10 @@ module ExvoAuth::Controllers::Base
 
   def sign_up_path
     "/auth/exvo?x_sign_up=true"
+  end
+
+  def callback_key
+    "_callback"
   end
 
   def current_user
