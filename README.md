@@ -214,3 +214,7 @@ Limitations:
 
 * doesn't work with file uploads
 * all request params become query params when replayed
+
+
+
+Copyright © 2011-2012 Exvo.com Development BV, released under the MIT license
