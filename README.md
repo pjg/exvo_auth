@@ -1,6 +1,8 @@
 # exvo-auth
 
-This gem is Exvo's implementation of the oauth2 protocole for handling user authentication across Exvo apps.
+This gem supplements the [omniauth-exvo](https://github.com/Exvo/omniauth-exvo/)a gem. Together they implement the oauth2 protocol for handling users and applications authentication at Exvo.
+
+This gem depends on the [exvo_helpers](https://github.com/Exvo/exvo_helpers) gem for all of its configuration.
 
 
 
@@ -11,17 +13,21 @@ This gem is Exvo's implementation of the oauth2 protocole for handling user auth
 
 
 
-## OAuth2
+## Installation
 
-* Get familiar with [OmniAuth by Intridea](http://github.com/intridea/omniauth). Read about OAuth2.
-* Obtain `client_id` and `client_secret` for your app from Exvo.
-* Install `exvo-auth` gem and add it to your Gemfile.
+Add it to Gemfile:
 
+```ruby
+gem "exvo-auth"
+```
 
+Run bundle:
 
-## Middleware configuration
+```bash
+$ bundle
+```
 
-The preferred way to configure the gem is via the ENV variables:
+The preferred way to configure this gem is via the ENV variables:
 
 ```ruby
 ENV['AUTH_CLIENT_ID']     = "foo"
@@ -31,49 +37,37 @@ ENV['AUTH_REQUIRE_SSL']   = "false"         # [OPTIONAL] disable SSL, useful in 
 ENV['AUTH_HOST']          = "test.exvo.com" # [OPTIONAL] override the default auth host
 ```
 
-Then add this line to `config/application.rb`:
+But you can also set things directly in the `config/application.rb` file (before the middleware declaration):
+
+```ruby
+Exvo::Helpers.auth_client_id     = "foo"
+Exvo::Helpers.auth_client_secret = "bar"
+Exvo::Helpers.auth_debug         = true            # boolean
+Exvo::Helpers.auth_require_ssl   = false           # boolean
+Exvo::Helpers.auth_host          = "test.exvo.com"
+```
+
+Add this line to `config/application.rb`:
 
 ```ruby
 config.middleware.use ExvoAuth::Middleware
 ```
 
-But you can also set things directly in the `config/application.rb` file (before the middleware declaration):
+Add routes (Rails example):
 
 ```ruby
-ExvoAuth::Config.client_id     = "foo"
-ExvoAuth::Config.client_secret = "bar"
-ExvoAuth::Config.debug         = true            # boolean
-ExvoAuth::Config.require_ssl   = false           # boolean
-ExvoAuth::Config.host          = "test.exvo.com"
+match "/auth/exvo/callback" => "sessions#create"
+match "/auth/failure"       => "sessions#failure"
+match "/sign_out"           => "sessions#destroy"
 ```
 
-
-## Add routes
-
-The following comes from Rails `config/routes.rb` file:
-
-```ruby
-match "/auth/failure"                  => "sessions#failure"
-match "/auth/interactive/callback"     => "sessions#create"
-match "/auth/non_interactive/callback" => "sessions#create" # only if you use json-based login
-match "/sign_out"                      => "sessions#destroy"
-```
-
-Failure url is called whenever there's a failure (d'oh).
-
-You can have separate callbacks for interactive and non-interactive callback routes but you can also route both callbacks to the same controller method like shown above.
-
-
-## Include controller helpers into your application controller
+Include controller helpers into your application controller
 
 ```ruby
 include ExvoAuth::Controllers::Rails # (or Merb)
 ```
 
-
-## Implement a sessions controller
-
-Sample implementation (Rails):
+Implement a sessions controller (Rails example):
 
 ```ruby
 class SessionsController < ApplicationController
@@ -91,19 +85,18 @@ class SessionsController < ApplicationController
 end
 ```
 
-It's good to have your SessionsController#create action a little more extended, so that each time the user logs in into the app, his user data (like email, nickname) is updated from auth (his profile):
+It's good to have your SessionsController#create action a little more extended, so that each time the user logs in into the app, his user data (like email, nickname, etc.) is updated from auth (his profile):
 
 ```ruby
 def create
   auth = request.env["omniauth.auth"]
+  user = User.find_or_create_by_uid(auth["uid"])
 
-  if user = User.find_by_uid(auth["uid"])
-    user.update_attributes!(auth["user_info"])
+  if user && user.update_attributes(:nickname => auth["info"]["nickname"], :email => auth["info"]["email"], :plan => auth["extra"]["user_hash"]["plan"], :language => auth["extra"]["user_hash"]["language"])
+    sign_in_and_redirect!
   else
-    user = User.create(:uid => auth["uid"], :nickname => auth["user_info"]["nickname"], :email => auth["user_info"]["email"])
+    fail "Could not update user"
   end
-
-  sign_in_and_redirect!
 end
 ```
 
@@ -136,7 +129,7 @@ request.env["omniauth.auth"].inspect
 ```
 
 
-## Implement `#find_or_create_user_by_uid(uid)` in your Application Controller
+Implement `#find_or_create_user_by_uid(uid)` in your Application Controller
 
 This method will be called by `#current_user`. Previously we did this in `sessions_controller` but since the sharing sessions changes this controller will not be used in most cases because the session comes from another app through a shared cookie. This method should find user by uid or create it.
 
@@ -154,9 +147,9 @@ It's best to leave this method as it is (without updating any user data inside t
 ## Sign up and sign in paths for use in links
 
 ```ruby
-sign in path:                       "/auth/interactive"
-sign up path:                       "/auth/interactive?x_sign_up=true" # this is OAuth2 custom param
-sign in path with a return address: "/auth/interactive?state=url"      # using OAuth2 state param
+sign in path:                       "/auth/exvo"
+sign up path:                       "/auth/exvo?x_sign_up=true" # this is OAuth2 custom param
+sign in path with a return address: "/auth/exvo?state=url"      # using OAuth2 state param
 ```
 
 You have a handy methods available in controllers (and views in Rails): `sign_in_path` and `sign_up_path`.
@@ -175,10 +168,8 @@ before_filter :authenticate_user!
 All info about any particular user ca be obtained using auth api (`/users/uid.json` path).
 
 
-## Read the source, there are few features not mentioned in this README
 
-
-# Inter-Application Communication
+## Inter-Application Communication
 
 You need to have "App Authorization" created by Exvo first.
 
@@ -189,7 +180,7 @@ Contact us and provide following details:
 * `scope`       - The tag associated with the api you want to use in the provider app
 
 
-## Consumer side
+### Consumer side
 
 ```ruby
 consumer = ExvoAuth::Autonomous::Consumer.new(
@@ -199,25 +190,27 @@ consumer.get(*args) # interface is exactly the same like in HTTParty. All http m
 ```
 
 
-## Provider side
+### Provider side
 
 See `#authenticate_app_in_scope!(scope)` method in `ExvoAuth::Controllers::Rails` (or Merb). This method lets you create a before filter.
 Scopes are used by providing app to check if a given consuming app should have access to a given resource inside a scope.
 If scopes are empty, then provider app should not present any resources to consumer.
 
 
-## Example of the before filter for provider controller:
+Example of the before filter for provider controller:
 
 ```ruby
-before_filter {|c| c.authenticate_app_in_scope!("payments") }
+before_filter { |c| c.authenticate_app_in_scope!("payments") }
 ```
 
-In provider controller, which is just a fancy name for API controller, you can use `#current_app_id` method to get the app_id of the app connecting.
+In the provider controller, which is just a fancy name for API controller, you can use `#current_app_id` method to get the `app_id` of the app connecting.
 
 
-# Dejavu - replay non-GET requests after authentication redirects
+## Dejavu
 
-## Limitations:
+Replay non-GET requests after authentication redirects.
+
+Limitations:
 
 * doesn't work with file uploads
 * all request params become query params when replayed
