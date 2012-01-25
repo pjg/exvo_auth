@@ -1,8 +1,11 @@
 # exvo_auth
 
-This gem supplements the [omniauth-exvo](https://github.com/Exvo/omniauth-exvo/)a gem. Together they implement the oauth2 protocol for handling users and applications authentication at Exvo.
+This gem supplements the [omniauth-exvo](https://github.com/Exvo/omniauth-exvo/) gem. Together they implement the oauth2 protocol for handling users and applications authentication at Exvo.
 
 This gem depends on the [exvo_helpers](https://github.com/Exvo/exvo_helpers) gem for all of its configuration.
+
+
+Note, that this gem was previously named "exvo-auth".
 
 
 
@@ -61,7 +64,7 @@ match "/auth/failure"       => "sessions#failure"
 match "/sign_out"           => "sessions#destroy"
 ```
 
-Include controller helpers into your application controller
+Include controller helpers in your `ApplicationController.rb`:
 
 ```ruby
 include ExvoAuth::Controllers::Rails # (or Merb)
@@ -85,14 +88,14 @@ class SessionsController < ApplicationController
 end
 ```
 
-It's good to have your SessionsController#create action a little more extended, so that each time the user logs in into the app, his user data (like email, nickname, etc.) is updated from auth (his profile):
+It's good to have your `SessionsController`'s `#create` action a little more extended, so that each time the user logs in into the app, his user data (like email, nickname, etc.) is updated from the auth app (i.e. from his profile):
 
 ```ruby
 def create
-  auth = request.env["omniauth.auth"]
-  user = User.find_or_create_by_uid(auth["uid"])
+  auth_hash = request.env["omniauth.auth"]
+  user = User.find_or_create_by_uid(auth_hash["uid"])
 
-  if user && user.update_attributes(:nickname => auth["info"]["nickname"], :email => auth["info"]["email"], :plan => auth["extra"]["user_hash"]["plan"], :language => auth["extra"]["user_hash"]["language"])
+  if user && user.update_from_auth_hash(auth_hash)
     sign_in_and_redirect!
   else
     fail "Could not update user"
@@ -100,26 +103,48 @@ def create
 end
 ```
 
+and your `#update_from_auth_hash` method at `User` model might look like this:
+
+```ruby
+def update_from_auth_hash(auth_hash)
+  update_attributes({
+    :nickname => auth_hash["info"]["nickname"],
+    :email => auth_hash["info"]["email"],
+    :plan => auth_hash["extra"]["raw_info"]["plan"],
+    :language => auth_hash["extra"]["raw_info"]["language"]
+  })
+end
+```
+
+Note, that you don't have to update all user attributes. You can update only ones you want.
+
+
 This is what you get (and what you can use/save for the local user) from auth (example data as of 2012-01):
 
 ```ruby
-request.env["omniauth.auth"].inspect
+request.env["omniauth.auth"].to_hash.inspect
 
-  { "provider" => "exvo",
+  {
+    "provider" => "exvo",
     "uid" => 1,
+
     "credentials" => {
-      "token" => "a2d09701559b9f26a8284d6f94670477d882ad6d9f3d92ce9917262a6b54085fa3fb99e111340459"
+      "token" => "a2d09701559b9f26a8284d6f94670477d882ad6d9f3d92ce9917262a6b54085fa3fb99e111340459",
+      "expires" => false
     },
+
     "info" => {
       "nickname" => "Pawel",
-      "email" => "pawel@exvo.com"
+      "email" => "pawel@exvo.com",
+      "name" => "Pawel"
     },
+
     "extra" => {
-      "user_hash" => {
+      "raw_info" => {
         "id" => 1,
         "nickname" => "Pawel",
         "country_code" => nil,
-        "plan" => "admin",
+        "plan" => "basic",
         "language" => "en",
         "email" => "pawel@exvo.com",
         "referring_user_id" => nil
@@ -129,7 +154,7 @@ request.env["omniauth.auth"].inspect
 ```
 
 
-Implement `#find_or_create_user_by_uid(uid)` in your Application Controller
+Implement `#find_or_create_user_by_uid(uid)` in your `ApplicationController`:
 
 This method will be called by `#current_user`. Previously we did this in `sessions_controller` but since the sharing sessions changes this controller will not be used in most cases because the session comes from another app through a shared cookie. This method should find user by uid or create it.
 
@@ -157,7 +182,7 @@ You have a handy methods available in controllers (and views in Rails): `sign_in
 
 ## Require authentication in your controllers
 
-In `application_controller` (for all controllers) or in some controller just add:
+In `ApplicationController` (for all controllers) or in some controller just add:
 
 ```ruby
 before_filter :authenticate_user!
