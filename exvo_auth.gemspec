@@ -3,11 +3,11 @@ $:.push File.expand_path("../lib", __FILE__)
 require "exvo_auth/version"
 
 Gem::Specification.new do |gem|
-  gem.name        = "exvo-auth"
+  gem.name        = "exvo_auth"
   gem.version     = ExvoAuth::VERSION
   gem.authors     = ["Jacek Becela", "Paweł Gościcki"]
   gem.email       = ["jacek.becela@gmail.com", "pawel.goscicki@gmail.com"]
-  gem.homepage    = "https://github.com/Exvo/Auth"
+  gem.homepage    = "https://github.com/Exvo/exvo_auth"
   gem.summary     = "User and App authentication for Exvo"
   gem.description = "Collection of users and applications authentication methods for use when you want your users or applications authorize using the Exvo platform."
 

@@ -1,4 +1,4 @@
 source :gemcutter
 
-# Specify your gem's dependencies in exvo-auth.gemspec
+# Specify your gem's dependencies in exvo_auth.gemspec
 gemspec

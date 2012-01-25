@@ -1,4 +1,4 @@
-# exvo-auth
+# exvo_auth
 
 This gem supplements the [omniauth-exvo](https://github.com/Exvo/omniauth-exvo/)a gem. Together they implement the oauth2 protocol for handling users and applications authentication at Exvo.
 
@@ -18,7 +18,7 @@ This gem depends on the [exvo_helpers](https://github.com/Exvo/exvo_helpers) gem
 Add it to Gemfile:
 
 ```ruby
-gem "exvo-auth"
+gem "exvo_auth"
 ```
 
 Run bundle:
@@ -100,7 +100,7 @@ def create
 end
 ```
 
-This is what you get (and what you can use/save for the local user) from auth (example data as of 2011-12):
+This is what you get (and what you can use/save for the local user) from auth (example data as of 2012-01):
 
 ```ruby
 request.env["omniauth.auth"].inspect
@@ -110,7 +110,7 @@ request.env["omniauth.auth"].inspect
     "credentials" => {
       "token" => "a2d09701559b9f26a8284d6f94670477d882ad6d9f3d92ce9917262a6b54085fa3fb99e111340459"
     },
-    "user_info" => {
+    "info" => {
       "nickname" => "Pawel",
       "email" => "pawel@exvo.com"
     },
@@ -165,7 +165,7 @@ before_filter :authenticate_user!
 
 ## Fetching user information
 
-All info about any particular user ca be obtained using auth api (`/users/uid.json` path).
+All info about any particular user can be obtained using auth api (`/users/uid.json` path).
 
 
 
