@@ -19,7 +19,7 @@ module ExvoAuth::Controllers::Base
     session[:user_uid] = request.env["omniauth.auth"]["uid"]
 
     url = if params[:state] == "popup"
-      Exvo::Helpers..auth_uri + "/close_popup.html"
+      Exvo::Helpers.auth_uri + "/close_popup.html"
     elsif params[:state] # if not popup then an url
       params[:state]
     else
