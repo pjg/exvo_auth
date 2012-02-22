@@ -77,6 +77,10 @@ module ExvoAuth::Controllers::Base
     !!current_user
   end
 
+  def auth_hash
+    request.env["omniauth.auth"]
+  end
+
   protected
 
   def find_or_create_user_by_uid(uid)
