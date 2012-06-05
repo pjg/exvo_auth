@@ -116,7 +116,7 @@ def update_from_auth_hash(auth_hash)
 end
 ```
 
-Note, that you don't have to update all user attributes. You can update only ones you want.
+Note, that you don't have to update all user attributes. You can update only the ones you want.
 
 
 This is what you get (and what you can use/save for the local user) from auth (example data as of 2012-01):

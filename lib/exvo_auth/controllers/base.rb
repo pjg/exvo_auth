@@ -16,7 +16,7 @@ module ExvoAuth::Controllers::Base
 
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!
-    session[:user_uid] = request.env["omniauth.auth"]["uid"]
+    session[:user_uid] = auth_hash["uid"]
 
     url = if params[:state] == "popup"
       Exvo::Helpers.auth_uri + "/close_popup.html"
