@@ -88,13 +88,17 @@ module ExvoAuth::Controllers::Base
   end
 
   def sign_out_url(return_to)
-    Exvo::Helpers.auth_uri + "/users/sign_out?" + Rack::Utils.build_query({ :return_to => return_to })
+    params = return_to ? { :return_to => return_to } : {}
+    build_uri(Exvo::Helpers.auth_uri + "/users/sign_out", params)
   end
 
   def non_interactive_sign_in_path(params = {})
-    path  = "/auth/exvo"
+    build_uri("/auth/exvo", params)
+  end
+
+  def build_uri(prefix, params)
     query = Rack::Utils.build_query(params)
-    query.empty? ? path : "#{path}?#{query}"
+    query.empty? ? prefix : "#{prefix}?#{query}"
   end
 
   def current_request
