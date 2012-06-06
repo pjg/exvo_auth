@@ -18,7 +18,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "httparty"
   gem.add_dependency "activemodel", "~> 3.0"
-  gem.add_dependency "actionpack",  "~> 3.0"
   gem.add_dependency "exvo_helpers", "~> 0.2"
 
   gem.add_development_dependency "mocha"

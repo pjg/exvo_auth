@@ -6,7 +6,6 @@ require 'exvo_helpers'
 
 module ExvoAuth
   autoload :Middleware,   'exvo_auth/middleware'
-  autoload :SessionStore, 'exvo_auth/session_store'
   autoload :Dejavu,       'exvo_auth/dejavu'
   autoload :VERSION,      'exvo_auth/version'
 
