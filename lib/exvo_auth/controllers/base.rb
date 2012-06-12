@@ -1,6 +1,8 @@
 module ExvoAuth::Controllers::Base
   # A before filter to protect your sensitive actions.
   def authenticate_user!(opts = {})
+    authenticate_user_from_cookie
+
     if !signed_in?
       store_request!
 
@@ -14,9 +16,21 @@ module ExvoAuth::Controllers::Base
     end
   end
 
+  # Single Sign On - Authenticate user from cookie if a cookie is present
+  # and delete local session if it's not (this should prevent orphan session problem,
+  # when user signs out, but his session remains in one or more apps)
+  def authenticate_user_from_cookie
+    if cookies[:user_uid]
+      session[:user_uid] = cookies[:user_uid]
+    else
+      sign_out_user
+    end
+  end
+
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!
-    session[:user_uid] = auth_hash["uid"]
+    set_user_session
+    set_user_cookie
 
     url = if params[:state] == "popup"
       Exvo::Helpers.auth_uri + "/close_popup.html"
@@ -32,8 +46,7 @@ module ExvoAuth::Controllers::Base
   # Redirect to sign_out_url, signs out and redirects back to "/" (by default).
   # Usuallly this method is called from your sessions#destroy.
   def sign_out_and_redirect!(return_to = "/")
-    session.clear
-    remove_instance_variable(:@current_user) if instance_variable_defined?(:@current_user)
+    sign_out_user
     redirect_to sign_out_url(return_to)
   end
 
@@ -85,6 +98,24 @@ module ExvoAuth::Controllers::Base
 
   def find_or_create_user_by_uid(uid)
     raise "Implement find_or_create_user_by_uid in a controller"
+  end
+
+  def set_user_session
+    session[:user_uid] = auth_hash["uid"]
+  end
+
+  def set_user_cookie
+    cookies[:user_uid] = {
+      :value => current_user.uid,
+      :expires => 2.months.from_now,
+      :domain => Exvo::Helpers.sso_cookie_domain
+    }
+  end
+
+  def sign_out_user
+    session.clear
+    cookies.delete(:user_uid, :domain => Exvo::Helpers.sso_cookie_domain)
+    remove_instance_variable(:@current_user) if instance_variable_defined?(:@current_user)
   end
 
   def sign_out_url(return_to)
