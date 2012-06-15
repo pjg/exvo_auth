@@ -21,7 +21,7 @@ module ExvoAuth::Controllers::Base
   # when user signs out, but his session remains in one or more apps)
   def authenticate_user_from_cookie
     if cookies[:user_uid]
-      session[:user_uid] = cookies[:user_uid]
+      session[:user_uid] = verifier.verify(cookies[:user_uid])
     else
       sign_out_user
     end
@@ -106,10 +106,14 @@ module ExvoAuth::Controllers::Base
 
   def set_user_cookie
     cookies[:user_uid] = {
-      :value => current_user.uid,
+      :value => verifier.generate(current_user.uid),
       :expires => 2.months.from_now,
       :domain => Exvo::Helpers.sso_cookie_domain
     }
+  end
+
+  def verifier
+    @verifier ||= ActiveSupport::MessageVerifier.new(Exvo::Helpers.sso_cookie_secret)
   end
 
   def sign_out_user
