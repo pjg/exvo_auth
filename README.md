@@ -231,15 +231,5 @@ before_filter { |c| c.authenticate_app_in_scope!("payments") }
 In the provider controller, which is just a fancy name for API controller, you can use `#current_app_id` method to get the `app_id` of the app connecting.
 
 
-## Dejavu
-
-Replay non-GET requests after authentication redirects.
-
-Limitations:
-
-* doesn't work with file uploads
-* all request params become query params when replayed
-
-
 
 Copyright © 2011-2012 Exvo.com Development BV, released under the MIT license

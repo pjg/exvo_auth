@@ -37,7 +37,7 @@ module ExvoAuth::Controllers::Base
     elsif params[:state] # if not popup then an url
       params[:state]
     else
-      request_replay_url || "/"
+      session[:user_return_to] || "/"
     end
 
     redirect_to url
@@ -136,31 +136,7 @@ module ExvoAuth::Controllers::Base
     query.empty? ? prefix : "#{prefix}?#{query}"
   end
 
-  def current_request
-    request.params.reject{ |k, v| ["controller", "action"].include?(k) || v.nil? }.merge(
-      :_dejavu => {
-        :script_name  => request.script_name, # for Rack::Request
-        :path_info    => request.path_info,   # for Rack::Request
-        :request_path => request.path,        # for Merb::Request
-        :method       => request_method,
-        :content_type => request.content_type
-      }
-    )
-  end
-
   def store_request!
-    session[:stored_request] = Base64.encode64(MultiJson.encode(current_request))
-  end
-
-  def request_replay_url
-    if stored_request = session.delete(:stored_request)
-      params = MultiJson.decode(Base64.decode64(stored_request))
-      dejavu = params.delete("_dejavu")
-      if dejavu["method"] == "GET"
-        dejavu["script_name"] + dejavu["path_info"] + (params.any? ? "?" + Rack::Utils.build_nested_query(params) : "")
-      else
-        "/auth/dejavu?" + Rack::Utils.build_nested_query(params.merge(:_dejavu => dejavu))
-      end
-    end
+    session[:user_return_to] = request.path if request.get?
   end
 end

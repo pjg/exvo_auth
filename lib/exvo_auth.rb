@@ -5,9 +5,7 @@ require 'base64'
 require 'exvo_helpers'
 
 module ExvoAuth
-  autoload :Middleware,   'exvo_auth/middleware'
-  autoload :Dejavu,       'exvo_auth/dejavu'
-  autoload :VERSION,      'exvo_auth/version'
+  autoload :VERSION, 'exvo_auth/version'
 
   module Controllers
     autoload :Base,  'exvo_auth/controllers/base'
