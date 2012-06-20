@@ -21,7 +21,7 @@ module ExvoAuth::Controllers::Base
   # when user signs out, but his session remains in one or more apps)
   def authenticate_user_from_cookie
     if cookies[:user_uid]
-      session[:user_uid] = verifier.verify(cookies[:user_uid])
+      set_user_session_from_cookie
     else
       sign_out_user
     end
@@ -31,13 +31,13 @@ module ExvoAuth::Controllers::Base
   # but don't do anything if the cookie is not present
   def unobtrusively_authenticate_user_from_cookie
     if cookies[:user_uid]
-      session[:user_uid] = verifier.verify(cookies[:user_uid])
+      set_user_session_from_cookie
     end
   end
 
-  # Usually this method is called from your sessions#create.
+  # Omniauth - Usually this method is called from your sessions#create.
   def sign_in_and_redirect!
-    set_user_session
+    set_user_session_from_oauth
     set_user_cookie
 
     url = if params[:state] == "popup"
@@ -108,8 +108,12 @@ module ExvoAuth::Controllers::Base
     raise "Implement find_or_create_user_by_uid in a controller"
   end
 
-  def set_user_session
+  def set_user_session_from_oauth
     session[:user_uid] = auth_hash["uid"]
+  end
+
+  def set_user_session_from_cookie
+    session[:user_uid] = verifier.verify(cookies[:user_uid])
   end
 
   def set_user_cookie
