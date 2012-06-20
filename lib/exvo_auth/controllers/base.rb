@@ -117,7 +117,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def sign_out_user
-    session.clear
+    session.delete(:user_uid)
     cookies.delete(:user_uid, :domain => Exvo::Helpers.sso_cookie_domain)
     remove_instance_variable(:@current_user) if instance_variable_defined?(:@current_user)
   end
