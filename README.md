@@ -182,16 +182,29 @@ You have a handy methods available in controllers (and views in Rails): `sign_in
 
 ## Require authentication in your controllers
 
-In `ApplicationController` (for all controllers) or in some controller just add:
+If you want to protect your controllers from unauthorized access, you can add in your `ApplicationController` (for all controllers) or in some controller:
 
 ```ruby
 before_filter :authenticate_user!
 ```
 
+If your application requires being accessed by a not logged in users, but you would still like to display a "logged in" state for users, which are logged in, you can unobtrusively authenticate such users by adding this in your controller(s):
+
+```ruby
+before_filter :unobtrusively_authenticate_user_from_cookie
+```
+
+
+## Signle Sign On
+
+All Exvo applications use the Single Sign On mechanism with a shared cookie visible to all apps using the exvo.com domain. This is a signed cookie (HMAC), that cannot be tampered with.
+
+After signing in or signin up Exvo Auth, this cookie is set and from this moment each application will authenticate the user based only on this cookie. Signing out will delete this cookie.
+
+
 ## Fetching user information
 
 All info about any particular user can be obtained using auth api (`/users/uid.json` path).
-
 
 
 ## Inter-Application Communication

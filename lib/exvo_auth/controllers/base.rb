@@ -27,6 +27,14 @@ module ExvoAuth::Controllers::Base
     end
   end
 
+  # Single Sign On - Authenticate user from cookie if cookie is present
+  # but don't do anything if the cookie is not present
+  def unobtrusively_authenticate_user_from_cookie
+    if cookies[:user_uid]
+      session[:user_uid] = verifier.verify(cookies[:user_uid])
+    end
+  end
+
   # Usually this method is called from your sessions#create.
   def sign_in_and_redirect!
     set_user_session
