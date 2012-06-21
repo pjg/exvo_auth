@@ -1,7 +1,7 @@
 module ExvoAuth::Controllers::Base
   # A before filter to protect your sensitive actions.
   def authenticate_user!(opts = {})
-    authenticate_user_from_cookie
+    unobtrusively_authenticate_user!
 
     if !signed_in?
       store_request!
@@ -19,19 +19,12 @@ module ExvoAuth::Controllers::Base
   # Single Sign On - Authenticate user from cookie if a cookie is present
   # and delete local session if it's not (this should prevent orphan session problem,
   # when user signs out, but his session remains in one or more apps)
-  def authenticate_user_from_cookie
+  # unobtrusively means that there is no redirect to Exvo Auth if user is not logged in
+  def unobtrusively_authenticate_user!
     if cookies[:user_uid]
       set_user_session_from_cookie
     else
       sign_out_user
-    end
-  end
-
-  # Single Sign On - Authenticate user from cookie if cookie is present
-  # but don't do anything if the cookie is not present
-  def unobtrusively_authenticate_user_from_cookie
-    if cookies[:user_uid]
-      set_user_session_from_cookie
     end
   end
 

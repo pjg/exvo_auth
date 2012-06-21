@@ -188,7 +188,7 @@ before_filter :authenticate_user!
 If your application requires being accessed by a not logged in users, but you would still like to display a "logged in" state for users, which are logged in, you can unobtrusively authenticate such users by adding this in your controller(s):
 
 ```ruby
-before_filter :unobtrusively_authenticate_user_from_cookie
+before_filter :unobtrusively_authenticate_user!
 ```
 
 
