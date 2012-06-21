@@ -125,6 +125,7 @@ module ExvoAuth::Controllers::Base
   end
 
   def verifier
+    raise "ENV['SSO_COOKIE_SECRET'] is not set" if Exvo::Helpers.sso_cookie_secret.blank?
     @verifier ||= ActiveSupport::MessageVerifier.new(Exvo::Helpers.sso_cookie_secret)
   end
 
