@@ -38,7 +38,8 @@ ENV['AUTH_CLIENT_SECRET'] = "bar"
 ENV['AUTH_DEBUG']         = "true"          # [OPTIONAL] dumps all HTTP traffic to STDERR, useful during development; it *has to be a string, not a boolean*
 ENV['AUTH_REQUIRE_SSL']   = "false"         # [OPTIONAL] disable SSL, useful in development (note that all apps API urls must be http, not https); it *has to be a string, not a boolean*
 ENV['AUTH_HOST']          = "test.exvo.com" # [OPTIONAL] override the default auth host
-ENV['SSO_COOKIE_SECRET']  = "secret"        # Generate using `SecureRandom.hex(16)`
+ENV['SSO_COOKIE_DOMAIN']  = "example.com"   # [OPTIONAL] set the domain for which the Signle Sign On cookie will be set (default: exvo.com)
+ENV['SSO_COOKIE_SECRET']  = "secret"        # Single Sign On secret key (generate using `SecureRandom.hex(16)`)
 ```
 
 But you can also set things directly in the `config/application.rb` file (before the middleware declaration):
@@ -49,6 +50,7 @@ Exvo::Helpers.auth_client_secret = "bar"
 Exvo::Helpers.auth_debug         = true            # boolean
 Exvo::Helpers.auth_require_ssl   = false           # boolean
 Exvo::Helpers.auth_host          = "test.exvo.com"
+Exvo::Helpers.sso_cookie_domain  = "example.com"
 Exvo::Helpers.sso_cookie_secret  = "secret"
 ```
 
