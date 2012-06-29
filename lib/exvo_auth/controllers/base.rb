@@ -95,6 +95,12 @@ module ExvoAuth::Controllers::Base
     request.env["omniauth.auth"]
   end
 
+  # CSRF protection for SSO (http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/)
+  def handle_unverified_request
+    super
+    sign_out_user
+  end
+
   protected
 
   def find_or_create_user_by_uid(uid)
