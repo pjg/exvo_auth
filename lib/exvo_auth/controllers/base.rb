@@ -32,16 +32,7 @@ module ExvoAuth::Controllers::Base
   def sign_in_and_redirect!
     set_user_session_from_oauth
     set_user_cookie
-
-    url = if params[:state] == "popup"
-      Exvo::Helpers.auth_uri + "/close_popup.html"
-    elsif params[:state] # if not popup then an url
-      params[:state]
-    else
-      session[:user_return_to] || "/"
-    end
-
-    redirect_to url
+    redirect_to session[:user_return_to] || "/"
   end
 
   # Redirect to sign_out_url, signs out and redirects back to "/" (by default).

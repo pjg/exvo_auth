@@ -173,7 +173,6 @@ It's best to leave this method as it is (without updating any user data inside t
 ```ruby
 sign in path:                       "/auth/exvo"
 sign up path:                       "/auth/exvo?x_sign_up=true" # this is OAuth2 custom param
-sign in path with a return address: "/auth/exvo?state=url"      # using OAuth2 state param
 ```
 
 You have a handy methods available in controllers (and views in Rails): `sign_in_path` and `sign_up_path`.
