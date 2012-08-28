@@ -11,14 +11,14 @@ Note, that this gem was previously named "exvo-auth".
 
 ## Requirements
 
-* Runs on Ruby 1.8.7 & 1.9.2 (preferred version)
-* Rails 3.0+ (works with Rails 3.1) or Merb
+* Runs on Ruby 1.8.7, 1.9.2 & 1.9.3 (preferred version)
+* Rails 3.0+ (works with Rails 3.2.*) or Merb
 
 
 
 ## Installation
 
-Add it to Gemfile:
+Add it to the Gemfile:
 
 ```ruby
 gem "exvo_auth"
@@ -42,7 +42,7 @@ ENV['SSO_COOKIE_DOMAIN']  = "example.com"   # [OPTIONAL] set the domain for whic
 ENV['SSO_COOKIE_SECRET']  = "secret"        # Single Sign On secret key (generate using `SecureRandom.hex(16)`)
 ```
 
-But you can also set things directly in the `config/application.rb` file (before the middleware declaration):
+But you can also set things directly in the `config/application.rb` file:
 
 ```ruby
 Exvo::Helpers.auth_client_id     = "foo"
